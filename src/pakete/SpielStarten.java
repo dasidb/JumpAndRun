@@ -11,6 +11,9 @@ import java.util.ArrayList;
 public class SpielStarten extends  PApplet {
     Charakter held;
     Hindernis hindernis;
+    Spike spike;
+    SpielWelt welt;
+
 
     public static void main(String[] args) {
         System.out.println("hier ist die main klasse");
@@ -23,11 +26,22 @@ public class SpielStarten extends  PApplet {
         System.out.println("hier ist der consstruktor");
     }
 
+    public void ersschaffeObjekte(){
+        erschaffeHeld();
+       // erschaffeHindernisse();
+        erschaffeSpike();
+        erschaffeWelt();
+
+
+    }
     public void erschaffeHeld() {
         System.out.println("hier ist erschaffe held");
         PImage heldImage = loadImage("resources/held.png");
         held = new Charakter(heldImage, 1, 1);
-
+        //spike = new Spike();
+    }
+    public void erschaffeWelt(){
+        welt = new SpielWelt();
     }
 
     public void spielStarten() {
@@ -39,9 +53,9 @@ public class SpielStarten extends  PApplet {
     public void setup() {
         super.setup();
         System.out.println("hier ist setup");
-
-        erschaffeHeld();
-        erschaffeHindernisse();
+        ersschaffeObjekte();
+      //  erschaffeHeld();
+       // erschaffeHindernisse();
         System.out.println(held);
         background(0);
         frameRate(30);
@@ -55,30 +69,68 @@ public class SpielStarten extends  PApplet {
         ;
         size(800, 800);
         System.out.println("hier wird settings aufgerufen");
+
     }
 
     public void draw() {
         clear();
+
         image(held.getImg(), held.getPositionX(), held.getPositionY());
-        for(Hindernis c : hindernis.getHindernisListe()){
-            image(c.getImg(),c.getPositionX(),c.getPositionY());
-        }
+
+        //for(Hindernis c : hindernis.getHindernisListe()){
+         //   image(c.getImg(),c.getPositionX(),c.getPositionY());
+       // }
+
+
+
+
+        spike.erschaffeSpike(this);
+        gravity();
+       // kollision();
+
+    //System.out.println(get(310,455));
+
 
     }
 
+    public void kollision(){
+        // wenn position held == position hinderniss dann ende
+       /* int i = 0;
+        for(Spike c : spike.getSpikeListe() ){
+            System.out.println(held.getPositionX());
+            System.out.println(spike.getSpikeListe().get(c).getGetPositionX3() + c);
+            if(held.getPositionX() == spike.getSpikeListe().get(1).getGetPositionX3()) {
+                i++;
+                System.out.println("treffer");
+            } */
+            System.out.println(held.getPositionX());
+            for(int i = 0; i <spike.getSpikeListe().size(); i++ ){
+                if(held.getPositionX() == spike.getSpikeListe().get(i).getGetPositionX3()){
+                    System.out.println("treffer");
+                }
+            }
+
+    }
+    public void gravity(){
+        if(held.getPositionY() <= 500){
+            held.setPositionY(held.getPositionY() + welt.getGravity());
+
+        }
+    }
 
     @Override
     public void keyPressed(KeyEvent event) {
         super.keyPressed(event);
+
         if (keyPressed) {
             if (key == 'd' || key == 'D') {
-                float x = held.getPositionX() + 20;
+                float x = held.getPositionX() + 1;
                 float y = 20;
                 held.setPositionX(x);
 
             }
             if (key == 'a' || key == 'A') {
-                float x = held.getPositionX() - 20;
+                float x = held.getPositionX() - 1;
                 float y = 20;
                 held.setPositionX(x);
 
@@ -96,7 +148,7 @@ public class SpielStarten extends  PApplet {
             }
         }
     }
-    public ArrayList<Hindernis> erschaffeHindernisse(){
+   /* public ArrayList<Hindernis> erschaffeHindernisse(){
         ArrayList<Hindernis> hindernisListe = new ArrayList<>();
         // ggf wirds hier fatal
 
@@ -109,6 +161,10 @@ public class SpielStarten extends  PApplet {
         }
         hindernis.setHindernisListe(hindernisListe);
         return hindernisListe;
+    } */
+
+    public void erschaffeSpike(){
+        spike = new Spike();
     }
 
 

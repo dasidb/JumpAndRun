@@ -1,18 +1,26 @@
 package pakete;
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PVector;
 import processing.event.KeyEvent;
 
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Array;
+import java.nio.channels.Pipe;
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class SpielStarten extends  PApplet {
     Charakter held;
     Hindernis hindernis;
     Spike spike;
     SpielWelt welt;
+    PVector veca;
+    PVector vecb;
+    PVector vecc;
+    PVector vecp;
+    boolean isColiding;
 
 
     public static void main(String[] args) {
@@ -39,6 +47,10 @@ public class SpielStarten extends  PApplet {
         PImage heldImage = loadImage("resources/held.png");
         held = new Charakter(heldImage, 1, 1);
         //spike = new Spike();
+    }
+    public void aendereBild(PImage p){
+        p = loadImage("resources/spike.png");
+        held.setImg(p);
     }
     public void erschaffeWelt(){
         welt = new SpielWelt();
@@ -88,29 +100,64 @@ public class SpielStarten extends  PApplet {
         gravity();
        // kollision();
 
+       for(int i = 0; i < spike.getSpikeListe().size(); i++) {
+
+            if (kollision(spike.getSpikeListe().get(i)) == true) {
+                // System.out.println("es ist trueeeee");
+
+            }
+        }
+       if(isColiding == true){
+
+           aendereBild(held.getImg());
+
+       }
+
+        }
+
     //System.out.println(get(310,455));
 
 
-    }
 
-    public void kollision(){
-        // wenn position held == position hinderniss dann ende
-       /* int i = 0;
-        for(Spike c : spike.getSpikeListe() ){
-            System.out.println(held.getPositionX());
-            System.out.println(spike.getSpikeListe().get(c).getGetPositionX3() + c);
-            if(held.getPositionX() == spike.getSpikeListe().get(1).getGetPositionX3()) {
-                i++;
-                System.out.println("treffer");
-            } */
+
+    public boolean kollision(Spike spike){
+
+        veca = new PVector(spike.getGroeßeX1(),spike.getGroeßeY1());
+
+        vecb = new PVector(spike.getGroeßeX2(),spike.getPositionY2());
+
+        vecc = new PVector(spike.getGetPositionX3(),spike.getGetPositionY3());
+
+        vecp = new PVector(held.getPositionX(),held.getPositionY());
+
+        float w1 = (veca.x*(vecc.y - veca.y) + (vecp.y - veca.y)*(vecc.x -veca.x) - vecp.x*(vecc.y - veca.y))/
+                ((vecb.y - veca.y)*(vecc.x -veca.x) - (vecb.x -veca.x)*(vecc.y - veca.y));
+
+        float w2 = (vecp.y - veca.y - w1*(vecb.y -veca.y)) /
+                (vecc.y - veca.y);
+
+      //  System.out.println("w1 "+ w1);
+       // System.out.println("w2 " +w2);
+
+        if(w1 >= 0 && w2 >= 0 && (w1+w2) <= 1){
+            isColiding = true;
+        }else{
+            //sColiding = false;
+        }
+        System.out.println(isColiding);
+        return isColiding;
+
+
+
+        /*
             System.out.println(held.getPositionX());
             for(int i = 0; i <spike.getSpikeListe().size(); i++ ){
                 if(held.getPositionX() == spike.getSpikeListe().get(i).getGetPositionX3()){
                     System.out.println("treffer");
-                }
+                }*/
             }
 
-    }
+
     public void gravity(){
         if(held.getPositionY() <= 500){
             held.setPositionY(held.getPositionY() + welt.getGravity());
@@ -124,13 +171,13 @@ public class SpielStarten extends  PApplet {
 
         if (keyPressed) {
             if (key == 'd' || key == 'D') {
-                float x = held.getPositionX() + 1;
+                float x = held.getPositionX() + 10;
                 float y = 20;
                 held.setPositionX(x);
 
             }
             if (key == 'a' || key == 'A') {
-                float x = held.getPositionX() - 1;
+                float x = held.getPositionX() - 10;
                 float y = 20;
                 held.setPositionX(x);
 

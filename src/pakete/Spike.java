@@ -75,13 +75,13 @@ public class Spike extends Hindernis{
 // Constructoren
 
 
-    public Spike(float groeßeX1, float groeßeY1, float groeßeX2, float positionY2, float getPositionX3, float getPositionY3) {
+    public Spike(float groeßeX1, float groeßeY1, float groeßeX2, float groeßeY2, float groeßeX3, float groeßeY3) {
         this.groeßeX1 = groeßeX1;
         this.groeßeY1 = groeßeY1;
         this.groeßeX2 = groeßeX2;
-        this.positionY2 = positionY2;
-        this.getPositionX3 = getPositionX3;
-        this.getPositionY3 = getPositionY3;
+        this.positionY2 = groeßeY2;
+        this.getPositionX3 = groeßeX3;
+        this.getPositionY3 = groeßeY3;
     }
 
     public Spike(){
@@ -94,7 +94,7 @@ public class Spike extends Hindernis{
         int y = 400;
         int z = 250;
         for(int i = 0; i <5; i++){
-            // x
+            // arg 1 mitte arg 2 links arg 3 rechts
             Spike spike1 = new Spike(x,y,x-20,y+30,x+20,y+30);
 
             //Spike spike1 = new Spike(50+x+z,40+z,40+x+z,20+z,60+x+z,20+z);

@@ -48,7 +48,12 @@ public class SpielStarten extends  PApplet {
         held = new Charakter(heldImage, 1, 1);
         //spike = new Spike();
     }
-    public void aendereBild(PImage p){
+    public void respawn(PImage p){
+        p = loadImage("resources/held.png");
+        held.setImg(p);
+    }
+
+    public void sterben(PImage p){
         p = loadImage("resources/spike.png");
         held.setImg(p);
     }
@@ -109,7 +114,7 @@ public class SpielStarten extends  PApplet {
         }
        if(isColiding == true){
 
-           aendereBild(held.getImg());
+           sterben(held.getImg());
 
        }
 
@@ -170,6 +175,12 @@ public class SpielStarten extends  PApplet {
         super.keyPressed(event);
 
         if (keyPressed) {
+            if(key =='r' || key =='R'){
+                held.setPositionX(1);
+                held.setPositionY(1);
+                isColiding = false;
+                respawn(held.getImg());
+            }
             if (key == 'd' || key == 'D') {
                 float x = held.getPositionX() + 10;
                 float y = 20;

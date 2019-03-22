@@ -105,13 +105,23 @@ public class SpielStarten extends  PApplet {
         gravity();
        // kollision();
 
-       for(int i = 0; i < spike.getSpikeListe().size(); i++) {
+        for(Spike c : spike.getSpikeListe()){
+            if((held.getPositionX() - c.getGroeßeX1() < 30 && held.getPositionX() - c.getGroeßeX1() > -30 && held.getPositionY() - c.getGroeßeY1() < 30 && held.getPositionY() - c.getGroeßeY1() > -30) ||
+                    (held.getPositionX() - c.getGroeßeX2() < 30 && held.getPositionX() - c.getGroeßeX2() > -30 && held.getPositionY() - c.getPositionY2() < 30 && held.getPositionY() - c.getPositionY2() > -30 ) ||
+                    (held.getPositionX() - c.getGetPositionX3() < 30 && held.getPositionX() - c.getGetPositionX3() > -30 && held.getPositionY() - c.getGetPositionY3() < 30 && held.getPositionY() - c.getGetPositionY3() > -30))
+                    {
+                System.out.println("testet");
+            if(kollision(c) == true) {
+            }
+            }
+            }
+      /* for(int i = 0; i < spike.getSpikeListe().size(); i++) {
 
             if (kollision(spike.getSpikeListe().get(i)) == true) {
                 // System.out.println("es ist trueeeee");
 
             }
-        }
+        } */
        if(isColiding == true){
 
            sterben(held.getImg());

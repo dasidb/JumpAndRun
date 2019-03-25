@@ -7,7 +7,7 @@ import processing.core.PImage;
 import java.awt.*;
 
 public class SpielWelt {
-    private float gravity = 1f;
+    private float gravity = 4f;
     private PImage welt;
 
     public float getGravity() {

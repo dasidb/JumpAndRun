@@ -24,7 +24,6 @@ public class SpielStarten extends PApplet {
 	private boolean isColiding;
 	private ArrayList<Spike> spikeListe;
 	private static final float VELOCITY = 5;
-	
 
 	public ArrayList<Spike> getSpikeListe() {
 		return spikeListe;
@@ -61,7 +60,7 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void respawn(PImage p) {
-		//p = loadImage("resources/held.png");
+		// p = loadImage("resources/held.png");
 		held.setImg(p);
 	}
 
@@ -97,41 +96,42 @@ public class SpielStarten extends PApplet {
 
 	public void settings() {
 		super.settings();
-		
+
 		size(800, 800);
 		System.out.println("hier wird settings aufgerufen");
 
 	}
 
 	public void draw() {
-		clear();
-
+		background(0);
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
 
 		// for(Hindernis c : hindernis.getHindernisListe()){
 		// image(c.getImg(),c.getPositionX(),c.getPositionY());
 		// }
 
-	//	spike.erschaffeSpike(this, spikeListe);
+		// spike.erschaffeSpike(this, spikeListe);
 		// System.out.println(getSpikeListe().size());
 		gravity();
 		// kollision();
-		//System.out.println(frameRate);
-		
-		 for(Spike s : spikeListe){
-	            triangle(s.getTriangleX1(), s.getTriangleY1(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(), s.getTriangleY3());
+		// System.out.println(frameRate);
 
-	           // System.out.println("spike liste");
-	        }
-		
+		for (Spike s : spikeListe) {
+			triangle(s.getTriangleX1(), s.getTriangleY1(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
+					s.getTriangleY3());
+
+			// System.out.println("spike liste");
+		}
+
 		move();
-		
+
 		for (Spike c : getSpikeListe()) {
-			int kollisionDistance = 30;
-			if ((held.getPositionX() - c.getTriangleX1() < kollisionDistance
-					&& held.getPositionX() - c.getTriangleX1() > -kollisionDistance
-					&& held.getPositionY() - c.getTriangleY1() < kollisionDistance
-					&& held.getPositionY() - c.getTriangleY1() > -kollisionDistance)
+			int kollisionDistance = 90;
+
+			if (held.getPositionX() - c.getTriangleX1() < kollisionDistance
+					&& (held.getPositionX() - c.getTriangleX1() > -kollisionDistance
+							&& held.getPositionY() - c.getTriangleY1() < kollisionDistance
+							&& held.getPositionY() - c.getTriangleY1() > -kollisionDistance)
 					|| (held.getPositionX() - c.getTriangleX2() < kollisionDistance
 							&& held.getPositionX() - c.getTriangleX2() > -kollisionDistance
 							&& held.getPositionY() - c.getTriangleY2() < kollisionDistance
@@ -140,10 +140,11 @@ public class SpielStarten extends PApplet {
 							&& held.getPositionX() - c.getTriangleX3() > -kollisionDistance
 							&& held.getPositionY() - c.getTriangleY3() < kollisionDistance
 							&& held.getPositionY() - c.getTriangleY3() > -kollisionDistance)) {
-				System.out.println("testet");
+				// System.out.println("testet");
 				if (kollision(c) == true) {
 				}
 			}
+
 		}
 		/*
 		 * for(int i = 0; i < spike.getSpikeListe().size(); i++) {
@@ -175,18 +176,21 @@ public class SpielStarten extends PApplet {
 
 		vecp = new PVector(held.getPositionX(), held.getPositionY());
 
-		float w1 = (veca.x * (vecc.y - veca.y) + (vecp.y - veca.y) * (vecc.x - veca.x) - vecp.x * (vecc.y - veca.y))
-				/ ((vecb.y - veca.y) * (vecc.x - veca.x) - (vecb.x - veca.x) * (vecc.y - veca.y));
+		for (PVector p : held.getPixelList()) {
+			float w1 = (veca.x * (vecc.y - veca.y) + ((vecp.y + p.y) - veca.y) * (vecc.x - veca.x)
+					- (vecp.x + p.x) * (vecc.y - veca.y))
+					/ ((vecb.y - veca.y) * (vecc.x - veca.x) - (vecb.x - veca.x) * (vecc.y - veca.y));
 
-		float w2 = (vecp.y - veca.y - w1 * (vecb.y - veca.y)) / (vecc.y - veca.y);
+			float w2 = ((vecp.y + p.y) - veca.y - w1 * (vecb.y - veca.y)) / (vecc.y - veca.y);
 
-		// System.out.println("w1 "+ w1);
-		// System.out.println("w2 " +w2);
+			// System.out.println("w1 "+ w1);
+			// System.out.println("w2 " +w2);
 
-		if (w1 >= 0 && w2 >= 0 && (w1 + w2) <= 1) {
-			isColiding = true;
-		} else {
-			// sColiding = false;
+			if (w1 >= 0 && w2 >= 0 && (w1 + w2) <= 1) {
+				isColiding = true;
+			} else {
+				// sColiding = false;
+			}
 		}
 		System.out.println(isColiding);
 		return isColiding;
@@ -206,43 +210,28 @@ public class SpielStarten extends PApplet {
 		}
 	}
 
-	//@Override
-	/* public void keyPressed(KeyEvent event) {
-		super.keyPressed(event);
-
-		if (keyPressed) {
-			if (key == 'r' || key == 'R') {
-				held.setPositionX(1);
-				held.setPositionY(1);
-				isColiding = false;
-				respawn(held.getImg());
-			}
-			if (key == 'd' || key == 'D') {
-				float x = held.getPositionX() + 10;
-				
-				held.setPositionX(x);
-
-			}
-			if (key == 'a' || key == 'A') {
-				float x = held.getPositionX() - 10;
-				
-				held.setPositionX(x);
-
-			}
-			if (key == 'w' || key == 'W') {
-				float x = held.getPositionY() - 20;
-				
-				held.setPositionY(x);
-
-			}
-			if (key == 's' || key == 'S') {
-				float x = held.getPositionY() + 20;
-				
-				held.setPositionY(x);
-			}
-		}
-	}
-	*/
+	// @Override
+	/*
+	 * public void keyPressed(KeyEvent event) { super.keyPressed(event);
+	 * 
+	 * if (keyPressed) { if (key == 'r' || key == 'R') { held.setPositionX(1);
+	 * held.setPositionY(1); isColiding = false; respawn(held.getImg()); } if (key
+	 * == 'd' || key == 'D') { float x = held.getPositionX() + 10;
+	 * 
+	 * held.setPositionX(x);
+	 * 
+	 * } if (key == 'a' || key == 'A') { float x = held.getPositionX() - 10;
+	 * 
+	 * held.setPositionX(x);
+	 * 
+	 * } if (key == 'w' || key == 'W') { float x = held.getPositionY() - 20;
+	 * 
+	 * held.setPositionY(x);
+	 * 
+	 * } if (key == 's' || key == 'S') { float x = held.getPositionY() + 20;
+	 * 
+	 * held.setPositionY(x); } } }
+	 */
 	public void move() {
 		if (keyPressed) {
 			if (key == 'r' || key == 'R') {
@@ -253,32 +242,35 @@ public class SpielStarten extends PApplet {
 			}
 			if (key == 'd' || key == 'D') {
 				float x = held.getPositionX() + VELOCITY;
-				
+
 				held.setPositionX(x);
 
 			}
 			if (key == 'a' || key == 'A') {
 				float x = held.getPositionX() - VELOCITY;
-				
+
 				held.setPositionX(x);
 
 			}
 			if (key == 'w' || key == 'W') {
 				float x = held.getPositionY() - VELOCITY;
+				held.springen();
+				System.out.println(held.getJumpCount());
+				if(held.getPositionY()  > 499) {
+		    		held.setJumpCount(2);;
+		    	}
+
 				
-				held.setPositionY(x);
 
 			}
 			if (key == 's' || key == 'S') {
 				float x = held.getPositionY() + VELOCITY;
-				
+
 				held.setPositionY(x);
 			}
 		}
 	}
-		
-		
-	
+
 	/*
 	 * public ArrayList<Hindernis> erschaffeHindernisse(){ ArrayList<Hindernis>
 	 * hindernisListe = new ArrayList<>(); // ggf wirds hier fatal

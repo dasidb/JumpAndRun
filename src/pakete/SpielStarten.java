@@ -24,6 +24,9 @@ public class SpielStarten extends PApplet {
 	private boolean isColiding;
 	private ArrayList<Spike> spikeListe;
 	private static final float VELOCITY = 5;
+	private boolean aKey;
+	private boolean dKey;
+	private boolean testMovement;
 
 	public ArrayList<Spike> getSpikeListe() {
 		return spikeListe;
@@ -122,24 +125,32 @@ public class SpielStarten extends PApplet {
 
 			// System.out.println("spike liste");
 		}
+		System.out.println(testMovement + "das ist test Movement vor keypress");
+		System.out.println(aKey + " vor keyPress");
+		keyPress();
+		System.out.println(testMovement + "das ist test Movement nach keypress");
 
+		System.out.println(aKey + " nach keyPress");
 		move();
+		System.out.println(testMovement + "das ist test Movement nach move");
+		System.out.println(aKey + " nach move");
+		testMovement = false;
 
 		for (Spike c : getSpikeListe()) {
 			int kollisionDistance = 90;
 
 			if (held.getPositionX() - c.getTriangleX1() < kollisionDistance
 					&& (held.getPositionX() - c.getTriangleX1() > -kollisionDistance
-							&& held.getPositionY() - c.getTriangleY1() < kollisionDistance
-							&& held.getPositionY() - c.getTriangleY1() > -kollisionDistance)
+					&& held.getPositionY() - c.getTriangleY1() < kollisionDistance
+					&& held.getPositionY() - c.getTriangleY1() > -kollisionDistance)
 					|| (held.getPositionX() - c.getTriangleX2() < kollisionDistance
-							&& held.getPositionX() - c.getTriangleX2() > -kollisionDistance
-							&& held.getPositionY() - c.getTriangleY2() < kollisionDistance
-							&& held.getPositionY() - c.getTriangleY2() > -kollisionDistance)
+					&& held.getPositionX() - c.getTriangleX2() > -kollisionDistance
+					&& held.getPositionY() - c.getTriangleY2() < kollisionDistance
+					&& held.getPositionY() - c.getTriangleY2() > -kollisionDistance)
 					|| (held.getPositionX() - c.getTriangleX3() < kollisionDistance
-							&& held.getPositionX() - c.getTriangleX3() > -kollisionDistance
-							&& held.getPositionY() - c.getTriangleY3() < kollisionDistance
-							&& held.getPositionY() - c.getTriangleY3() > -kollisionDistance)) {
+					&& held.getPositionX() - c.getTriangleX3() > -kollisionDistance
+					&& held.getPositionY() - c.getTriangleY3() < kollisionDistance
+					&& held.getPositionY() - c.getTriangleY3() > -kollisionDistance)) {
 				// System.out.println("testet");
 				if (kollision(c) == true) {
 				}
@@ -148,10 +159,10 @@ public class SpielStarten extends PApplet {
 		}
 		/*
 		 * for(int i = 0; i < spike.getSpikeListe().size(); i++) {
-		 * 
+		 *
 		 * if (kollision(spike.getSpikeListe().get(i)) == true) { //
 		 * System.out.println("es ist trueeeee");
-		 * 
+		 *
 		 * } }
 		 */
 		if (isColiding == true) {
@@ -192,7 +203,7 @@ public class SpielStarten extends PApplet {
 				// sColiding = false;
 			}
 		}
-		System.out.println(isColiding);
+		//System.out.println(isColiding);
 		return isColiding;
 
 		/*
@@ -213,80 +224,72 @@ public class SpielStarten extends PApplet {
 	// @Override
 	/*
 	 * public void keyPressed(KeyEvent event) { super.keyPressed(event);
-	 * 
+	 *
 	 * if (keyPressed) { if (key == 'r' || key == 'R') { held.setPositionX(1);
 	 * held.setPositionY(1); isColiding = false; respawn(held.getImg()); } if (key
 	 * == 'd' || key == 'D') { float x = held.getPositionX() + 10;
-	 * 
+	 *
 	 * held.setPositionX(x);
-	 * 
+	 *
 	 * } if (key == 'a' || key == 'A') { float x = held.getPositionX() - 10;
-	 * 
+	 *
 	 * held.setPositionX(x);
-	 * 
+	 *
 	 * } if (key == 'w' || key == 'W') { float x = held.getPositionY() - 20;
-	 * 
+	 *
 	 * held.setPositionY(x);
-	 * 
+	 *
 	 * } if (key == 's' || key == 'S') { float x = held.getPositionY() + 20;
-	 * 
+	 *
 	 * held.setPositionY(x); } } }
 	 */
-	public void move() {
+
+	public void keyPress() {
 		if (keyPressed) {
-			if (key == 'r' || key == 'R') {
-				held.setPositionX(1);
-				held.setPositionY(1);
-				isColiding = false;
-				respawn(held.getImg());
+			if ((key == 'a' || key == 'A') && testMovement == false) {
+				aKey = true;
+				System.out.println("A");
 			}
-			if (key == 'd' || key == 'D') {
-				float x = held.getPositionX() + VELOCITY;
-
-				held.setPositionX(x);
-
+			if ((key == 'd' || key == 'D')  && testMovement == false){
+				dKey = true;
+				//System.out.println("D");
 			}
-			if (key == 'a' || key == 'A') {
-				float x = held.getPositionX() - VELOCITY;
 
-				held.setPositionX(x);
-
-			}
-			if (key == 'w' || key == 'W') {
-				float x = held.getPositionY() - VELOCITY;
-				held.springen();
-				System.out.println(held.getJumpCount());
-				if(held.getPositionY()  > 499) {
-		    		held.setJumpCount(2);;
-		    	}
-
-				
-
-			}
-			if (key == 's' || key == 'S') {
-				float x = held.getPositionY() + VELOCITY;
-
-				held.setPositionY(x);
-			}
 		}
 	}
 
-	/*
-	 * public ArrayList<Hindernis> erschaffeHindernisse(){ ArrayList<Hindernis>
-	 * hindernisListe = new ArrayList<>(); // ggf wirds hier fatal
-	 * 
-	 * 
-	 * PImage hindernissBild = loadImage("resources/spike.png"); for(int i =0 ; i <
-	 * 5; i++) { hindernis = new Hindernis(hindernissBild, (float) Math.random() *
-	 * 100, (float) Math.random() * 100);
-	 * 
-	 * hindernisListe.add(hindernis); } hindernis.setHindernisListe(hindernisListe);
-	 * return hindernisListe; }
-	 */
-
-	public void erschaffeSpike() {
-		spike = new Spike();
-		spikeListe = new ArrayList<>();
+	public void move() {
+	//	if(keyPressed){
+		if(aKey == true){
+			held.setPositionX(held.getPositionX()-VELOCITY);
+		//System.out.println("kommt an");
+		}
+		if(dKey == true) {
+			held.setPositionX(held.getPositionX() + VELOCITY);
+		}
+		//}
+	}
+	@Override
+	public void keyReleased(){
+		if (key == 'a' || key == 'A'){
+			System.out.println("a wurde released");
+			held.setPositionX(held.getPositionX());
+			aKey = false;
+			testMovement = true;
+		}
+		if (key == 'd' || key == 'D'){
+			System.out.println("d wurde released");
+			held.setPositionX(held.getPositionX());
+			dKey = false;
+			testMovement = true;
+		}
 	}
 
-}
+		public void erschaffeSpike () {
+			spike = new Spike();
+			spikeListe = new ArrayList<>();
+		}
+
+	}
+
+

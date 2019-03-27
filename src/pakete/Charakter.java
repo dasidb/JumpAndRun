@@ -102,9 +102,9 @@ public class Charakter {
     			
     			
     			t = img.get(c, i);
-    			System.out.println(Integer.toBinaryString(t));
+    			//System.out.println(Integer.toBinaryString(t));
     			int alpha = (t >>> 24); 
-    			System.out.println(alpha);
+    			//System.out.println(alpha);
     			//int alpha = ( t >> 24) & 255;
     			//                        11111111
     			//System.out.println(alpha);

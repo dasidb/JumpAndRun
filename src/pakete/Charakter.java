@@ -14,12 +14,74 @@ public class Charakter {
     private ArrayList<PVector> pixelList;
     private int t;
     private int jumpCount = 2;
-    private int jumpHeight = -50;
-    
-    
-    
-    
-    
+    private float jumpTime = 1/30F;
+    private float velocity = 20;
+    private boolean jumping;
+    private boolean maxJump;
+    private float jumpHeight;
+    private boolean falling;
+    private int test;
+
+    public int getT() {
+        return t;
+    }
+
+    public void setT(int t) {
+        this.t = t;
+    }
+
+    public float getJumpTime() {
+        return jumpTime;
+    }
+
+    public void setJumpTime(float jumpTime) {
+        this.jumpTime = jumpTime;
+    }
+
+    public float getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
+    }
+
+    public boolean isJumping() {
+        return jumping;
+    }
+
+    public void setJumping(boolean jumping) {
+        this.jumping = jumping;
+    }
+
+    public boolean isMaxJump() {
+        return maxJump;
+    }
+
+    public void setMaxJump(boolean maxJump) {
+        this.maxJump = maxJump;
+    }
+
+    public void setJumpHeight(float jumpHeight) {
+        this.jumpHeight = jumpHeight;
+    }
+
+    public boolean isFalling() {
+        return falling;
+    }
+
+    public void setFalling(boolean falling) {
+        this.falling = falling;
+    }
+
+    public int getTest() {
+        return test;
+    }
+
+    public void setTest(int test) {
+        this.test = test;
+    }
+
     public int getJumpCount() {
 		return jumpCount;
 	}
@@ -28,7 +90,7 @@ public class Charakter {
 		this.jumpCount = jumpCount;
 	}
 
-	public int getJumpHeight() {
+	public float getJumpHeight() {
 		return jumpHeight;
 	}
 
@@ -82,14 +144,31 @@ public class Charakter {
     public void sterben(Charakter held){
         held = null;
     }
-    
-    public void springen() {
-    	if(jumpCount >0) {
-    		setPositionY(getPositionY() + jumpHeight);
-    		jumpCount -= 1;
-    	}
-    	
-    	
+
+    public void springen(SpielStarten s) {
+
+        if (jumping == true && maxJump == false && jumpCount >0) {
+            s.setGravity(8F);
+            test = 1;
+            if(jumpTime + velocity > s.getGravity()) {
+                setPositionY(getPositionY() - velocity - jumpTime);
+                jumpTime -= 0.5F;
+
+                if(jumpTime + velocity <= s.getGravity()){
+                    maxJump = true;
+                    s.setGravity(0.1F);
+                    test = 0;
+                }
+            }
+            falling = true;
+
+
+        }
+
+        falling = false;
+
+
+
     }
     
     public void getNonTransparentPixel() {
@@ -102,21 +181,21 @@ public class Charakter {
     			
     			
     			t = img.get(c, i);
-    			//System.out.println(Integer.toBinaryString(t));
-    			int alpha = (t >>> 24); 
-    			//System.out.println(alpha);
+
+    			int alpha = (t >>> 24);
+
     			//int alpha = ( t >> 24) & 255;
     			//                        11111111
     			//System.out.println(alpha);
     			//16777215
-    			if(alpha > 100) {	
+    			if(alpha > 100) {
     			PVector p = new PVector(c,i);
         		pixelList.add(p);
-        		
+
     			}
-    			
+
         		//System.out.println("das ist C " + c + "\n" + "das ist i" + i);
-    			
+
     				
     			}
     		}

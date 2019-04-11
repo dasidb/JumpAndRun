@@ -15,12 +15,21 @@ public class Charakter {
     private int t;
     private int jumpCount = 2;
     private float jumpTime = 1/30F;
-    private float velocity = 20;
+    private float velocity = 16;
     private boolean jumping;
     private boolean maxJump;
     private float jumpHeight;
     private boolean falling;
     private int test;
+    private boolean secondJump;
+
+    public boolean isSecondJump() {
+        return secondJump;
+    }
+
+    public void setSecondJump(boolean secondJump) {
+        this.secondJump = secondJump;
+    }
 
     public int getT() {
         return t;
@@ -150,6 +159,10 @@ public class Charakter {
         if (jumping == true && maxJump == false && jumpCount >0) {
             s.setGravity(8F);
             test = 1;
+            if(secondJump == true){
+                jumpTime = 1/30F;
+                secondJump = false;
+            }
             if(jumpTime + velocity > s.getGravity()) {
                 setPositionY(getPositionY() - velocity - jumpTime);
                 jumpTime -= 0.5F;

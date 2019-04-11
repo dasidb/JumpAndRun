@@ -93,12 +93,14 @@ public class Spike extends Hindernis{
 	public void erschaffeSpike(PApplet p, ArrayList<Spike> spikeListe){
       //  spikeListe = new ArrayList<>();
         int x = 300;
-        int y = 400;
+        int y = 300;
         int z = 250;
         for(int i = 0; i <5; i++){
             // arg 1 mitte arg 2 links arg 3 rechts
             Spike spike1 = new Spike(x,y,x-20,y+30,x+20,y+30);
-
+            if(i == 3){
+                spike1 = new Spike(x-100,y-40,x-120,y-70,x-80,y-70);
+            }
             //Spike spike1 = new Spike(50+x+z,40+z,40+x+z,20+z,60+x+z,20+z);
             spikeListe.add(spike1);
            // System.out.println("erschaffe spike");

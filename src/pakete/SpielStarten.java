@@ -67,7 +67,7 @@ public class SpielStarten extends PApplet {
 
 	public void erschaffeHeld() {
 		System.out.println("hier ist erschaffe held");
-		PImage heldImage = loadImage("resources/90.png");
+		PImage heldImage = loadImage("resources/90tiny.png");
 		held = new Charakter(heldImage, 1, 1);
 	}
 
@@ -206,6 +206,8 @@ public class SpielStarten extends PApplet {
 		}
 		if(held.getPositionY() > 300){
 			held.setJumpCount(2);
+			//System.out.println("test");
+			held.setJumpTime(1/30F);
 		}
 
 	}
@@ -258,7 +260,11 @@ public class SpielStarten extends PApplet {
 	}
 	if(key == 'w') {
 		held.setJumping(false);
-		held.setJumpTime(1/30F);
+		//held.setJumpTime(1/30F);
+		if(held.getJumpCount() == 2){
+			held.setSecondJump(true);
+			System.out.println("test");
+		}
 		held.setMaxJump(false);
 		held.setJumpCount(held.getJumpCount() -1);
 	}

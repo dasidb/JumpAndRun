@@ -79,7 +79,7 @@ public class SpielStarten extends PApplet {
 
 	public void erschaffeHeld() {
 		System.out.println("hier ist erschaffe held");
-		PImage heldImage = loadImage("resources/90.png");
+		PImage heldImage = loadImage("resources/90tiny.png");
 		held = new Charakter(heldImage, 1, 1);
 
 	}

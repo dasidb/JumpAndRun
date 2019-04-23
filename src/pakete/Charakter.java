@@ -14,7 +14,7 @@ public class Charakter {
     private ArrayList<PVector> pixelList;
     private int t;
     private int jumpCount = 2;
-    private float jumpTime = 1/30F;
+    private float jumpTime = 1 / 30F;
     private float velocity = 20;
     private boolean jumping;
     private boolean maxJump;
@@ -83,28 +83,28 @@ public class Charakter {
     }
 
     public int getJumpCount() {
-		return jumpCount;
-	}
+        return jumpCount;
+    }
 
-	public void setJumpCount(int jumpCount) {
-		this.jumpCount = jumpCount;
-	}
+    public void setJumpCount(int jumpCount) {
+        this.jumpCount = jumpCount;
+    }
 
-	public float getJumpHeight() {
-		return jumpHeight;
-	}
+    public float getJumpHeight() {
+        return jumpHeight;
+    }
 
-	public void setJumpHeight(int jumpHeight) {
-		this.jumpHeight = jumpHeight;
-	}
+    public void setJumpHeight(int jumpHeight) {
+        this.jumpHeight = jumpHeight;
+    }
 
-	public ArrayList<PVector> getPixelList() {
-		return pixelList;
-	}
+    public ArrayList<PVector> getPixelList() {
+        return pixelList;
+    }
 
-	public void setPixelList(ArrayList<PVector> pixelList) {
-		this.pixelList = pixelList;
-	}
+    public void setPixelList(ArrayList<PVector> pixelList) {
+        this.pixelList = pixelList;
+    }
 
 
     public PImage getImg() {
@@ -132,29 +132,31 @@ public class Charakter {
     }
 
     public Charakter(PImage img, float positionX, float positionY) {
-    	
-    	
+
+
         this.img = img;
         this.positionX = positionX;
         this.positionY = positionY;
     }
-    public Charakter(){
+
+    public Charakter() {
 
     }
-    public void sterben(Charakter held){
+
+    public void sterben(Charakter held) {
         held = null;
     }
 
     public void springen(SpielStarten s) {
 
-        if (jumping == true && maxJump == false && jumpCount >0) {
+        if (jumping == true && maxJump == false && jumpCount > 0) {
             s.setGravity(8F);
             test = 1;
-            if(jumpTime + velocity > s.getGravity()) {
+            if (jumpTime + velocity > s.getGravity()) {
                 setPositionY(getPositionY() - velocity - jumpTime);
                 jumpTime -= 0.5F;
 
-                if(jumpTime + velocity <= s.getGravity()){
+                if (jumpTime + velocity <= s.getGravity()) {
                     maxJump = true;
                     s.setGravity(0.1F);
                     test = 0;
@@ -168,42 +170,47 @@ public class Charakter {
         falling = false;
 
 
+    }
+
+    // rest jump hinzufügen ggf jumptime/90
+    public void restJump() {
+        if (isMaxJump() == false) {
+
+        }
+    }
+        public void getNonTransparentPixel () {
+
+            pixelList = new ArrayList<PVector>();
+            for (int i = 0; i < img.height; i++) {
+
+                for (int c = 0; c < img.width; c++) {
+
+
+                    t = img.get(c, i);
+
+                    int alpha = (t >>> 24);
+
+                    //int alpha = ( t >> 24) & 255;
+                    //                        11111111
+                    //System.out.println(alpha);
+                    //16777215
+                    if (alpha > 100) {
+                        PVector p = new PVector(c, i);
+                        pixelList.add(p);
+
+                    }
+
+                    //System.out.println("das ist C " + c + "\n" + "das ist i" + i);
+
+
+                }
+            }
+
+        } //11111111101001010100111101001111
+        //11111111001100111000000000100111
 
     }
-    
-    public void getNonTransparentPixel() {
-    	
-    	pixelList = new ArrayList<PVector>();
-    	for(int i = 0; i < img.height; i++) {
-    		
-    		for(int c = 0; c < img.width; c++) {
-    			
-    			
-    			
-    			t = img.get(c, i);
 
-    			int alpha = (t >>> 24);
-
-    			//int alpha = ( t >> 24) & 255;
-    			//                        11111111
-    			//System.out.println(alpha);
-    			//16777215
-    			if(alpha > 100) {
-    			PVector p = new PVector(c,i);
-        		pixelList.add(p);
-
-    			}
-
-        		//System.out.println("das ist C " + c + "\n" + "das ist i" + i);
-
-    				
-    			}
-    		}
-    		
-    	} //11111111101001010100111101001111
-    	  //11111111001100111000000000100111
-    	
-    	}
     	
     
 

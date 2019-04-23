@@ -3,32 +3,43 @@ package pakete;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
-import processing.event.KeyEvent;
 
-import javax.swing.*;
-import java.awt.*;
-import java.lang.reflect.Array;
-import java.nio.channels.Pipe;
 import java.util.ArrayList;
-import java.util.Vector;
 
 public class SpielStarten extends PApplet {
 	private Charakter held;
-	private Hindernis hindernis;
+	private Platform hindernis;
 	private Spike spike;
+	private Editor editor;
 	private SpielWelt welt;
+	private Bullet bullet;
+	private Floor floor;
 	private PVector veca;
 	private PVector vecb;
 	private PVector vecc;
 	private PVector vecp;
 	private boolean isColiding;
 	private ArrayList<Spike> spikeListe;
+	private ArrayList<Bullet> bulletList;
+	private ArrayList<Bullet> bulletIDList = new ArrayList<>();
+	private ArrayList<Floor> floorList;
 	private static final float VELOCITY = 5;
 	private boolean aKey;
 	private boolean dKey;
 	private boolean sKey;
 	private boolean wKey;
 	private float gravity = 8F;
+	private boolean shoot;
+	private int testValue = 0;
+
+
+	public boolean isShoot() {
+		return shoot;
+	}
+
+	public void setShoot(boolean shoot) {
+		this.shoot = shoot;
+	}
 
 	public float getGravity() {
 		return gravity;
@@ -63,12 +74,14 @@ public class SpielStarten extends PApplet {
 		erschaffeSpike();
 		erschaffeWelt();
 
+
 	}
 
 	public void erschaffeHeld() {
 		System.out.println("hier ist erschaffe held");
 		PImage heldImage = loadImage("resources/90.png");
 		held = new Charakter(heldImage, 1, 1);
+
 	}
 
 	public void respawn(PImage p) {
@@ -90,11 +103,27 @@ public class SpielStarten extends PApplet {
 		held.setPositionX(100);
 	}
 
+	public void erschaffeFloor(){
+		PImage p = new PImage();
+		floor = new Floor(p = loadImage("resources/floor.png"),1,1);
+		floorList.add(floor);
+	}
+
+	public Bullet erschaffeBullet() {
+		PImage bulletImage = loadImage("resources/bullet.png");
+		bullet = new Bullet(bulletImage,held.getPositionX()+50,held.getPositionY()+50,2,20,this);
+		System.out.println("test1234");
+		return bullet;
+	}
+	@Override
 	public void setup() {
 		super.setup();
 		System.out.println("hier ist setup");
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
+		bulletList = new ArrayList<>();
+		editor = new Editor();
+		floorList = new ArrayList<>();
 
 		System.out.println(held);
 		held.getNonTransparentPixel();
@@ -103,7 +132,7 @@ public class SpielStarten extends PApplet {
 		loop();
 
 	}
-
+	@Override
 	public void settings() {
 		super.settings();
 
@@ -111,15 +140,36 @@ public class SpielStarten extends PApplet {
 		System.out.println("hier wird settings aufgerufen");
 
 	}
-
+	@Override
 	public void draw() {
 		background(0);
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
 		//gravity();
 		move();
 		gravitation();
+
 		held.springen(this);
 
+		for(Floor f : floorList){
+			f.setImage(loadImage("resources/floor.png"));
+			image(f.getImage(),f.getPosiX(),f.getPosiY());
+		}
+
+			for (Bullet b : bulletList) {
+
+				image(b.getImg(), b.getPositionX(), b.getPositionY());
+				b.bulletMove(b);
+				System.out.println(bulletList.size());
+				if(b.getPositionX() > 300){
+
+					bulletIDList.add(b);
+
+				}
+			}
+		for(Bullet b : bulletIDList){
+			bulletList.remove(b);
+		}
+		bulletIDList = new ArrayList<>();
 		for (Spike s : spikeListe) {
 			triangle(s.getTriangleX1(), s.getTriangleY1(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
 					s.getTriangleY3());
@@ -157,7 +207,6 @@ public class SpielStarten extends PApplet {
 	}
 
 
-
 	public boolean kollision(Spike spike) {
 
 		veca = new PVector(spike.getTriangleX1(), spike.getTriangleY1());
@@ -187,32 +236,33 @@ public class SpielStarten extends PApplet {
 
 	}
 
-	public void gravitation(){
-		if(held.getTest() == 1 && held.isJumping() == false && held.isMaxJump() == false){
+	public void gravitation() {
+		if (held.getTest() == 1 && held.isJumping() == false && held.isMaxJump() == false) {
 			gravity = 0;
 			held.setTest(0);
 		}
-		if(gravity !=8){
+		if (gravity != 8) {
 			gravity += 0.5F;
-			if(gravity >8){
+			if (gravity > 8) {
 				gravity = 8;
 			}
 		}
-		if(held.getPositionY() <300) {
+		if (held.getPositionY() < 300) {
 			// System.out.println(getHeldY());
 			held.setPositionY(held.getPositionY() + gravity);
 
 
 		}
-		if(held.getPositionY() > 300){
+		if (held.getPositionY() > 300) {
 			held.setJumpCount(2);
 		}
 
 	}
-		public void erschaffeSpike () {
-			spike = new Spike();
-			spikeListe = new ArrayList<>();
-		}
+
+	public void erschaffeSpike() {
+		spike = new Spike();
+		spikeListe = new ArrayList<>();
+	}
 
 
 	public void move() {
@@ -230,42 +280,76 @@ public class SpielStarten extends PApplet {
 		}
 
 	}
+
+
 	@Override
-	public void keyPressed(){
-		if(keyPressed){
-			if(key == 'a'){
+	public void keyPressed() {
+		if (keyPressed) {
+			if (key == 'a') {
 				aKey = true;
 			}
-			if(key == 'd'){
+			if (key == 'd') {
 				dKey = true;
 			}
-			if(key == 'w'){
+			if (key == 'w') {
 				held.setJumping(true);
 			}
 
-			if(key == 's'){
+			if (key == 's') {
 				sKey = true;
+			}
+			if (key == 'y') {
+			bulletList.add(erschaffeBullet());
+				setShoot(true);
 			}
 		}
 	}
-@Override
-	public void keyReleased(){
-	if(key == 'a'){
-		aKey = false;
+
+	@Override
+	public void keyReleased() {
+		if (key == 'a') {
+			aKey = false;
+		}
+		if (key == 'd') {
+			dKey = false;
+		}
+		if (key == 'w') {
+			held.setJumping(false);
+			held.setJumpTime(1 / 30F);
+			held.setMaxJump(false);
+			held.setJumpCount(held.getJumpCount() - 1);
+		}
+		if (key == 's') {
+			sKey = false;
+
+		}
+		if (key == 'y') {
+			setShoot(false);
+
+		}
+		if (key == 'q') {
+			editor.changeIndex(key);
+
+		}
+		if (key == 'e') {
+			editor.changeIndex(key);
+
+		}
 	}
-	if(key == 'd'){
-		dKey = false;
+
+	//boolean für is editor mode
+	@Override
+	public void mouseClicked(){
+		if(mouseButton == LEFT) {
+			System.out.println("Mouse Clicked left");
+
+			editor.createObjects((float) mouseX,(float) mouseY,spikeListe,floorList);
+		}
+		if(mouseButton == RIGHT) {
+			System.out.println("Mouse Clicked right");
+			editor.deleteSpike(spikeListe, (float) mouseX, (float) mouseY);
+		}
 	}
-	if(key == 'w') {
-		held.setJumping(false);
-		held.setJumpTime(1/30F);
-		held.setMaxJump(false);
-		held.setJumpCount(held.getJumpCount() -1);
-	}
-	if(key == 's'){
-		sKey = false;
-	}
-	}
-	}
+}
 
 

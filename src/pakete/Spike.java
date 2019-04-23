@@ -3,8 +3,8 @@ package pakete;
 import processing.core.PApplet;
 
 import java.util.ArrayList;
-
-public class Spike extends Hindernis{
+// ggf extends hinderniss
+public class Spike {
 
     private float triangleX1;
     private float triangleY1;
@@ -95,7 +95,7 @@ public class Spike extends Hindernis{
         int x = 300;
         int y = 400;
         int z = 250;
-        for(int i = 0; i <5; i++){
+        for(int i = 0; i <0; i++){
             // arg 1 mitte arg 2 links arg 3 rechts
             Spike spike1 = new Spike(x,y,x-20,y+30,x+20,y+30);
 

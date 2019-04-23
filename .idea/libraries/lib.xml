@@ -2,9 +2,12 @@
   <library name="lib">
     <CLASSES>
       <root url="file://$PROJECT_DIR$/../example-processing-intellij-master/lib" />
+      <root url="jar://$USER_HOME$/Downloads/core.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/Downloads/core.jar!/" />
+    </SOURCES>
     <jarDirectory url="file://$PROJECT_DIR$/../example-processing-intellij-master/lib" recursive="false" />
   </library>
 </component>

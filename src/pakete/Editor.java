@@ -1,5 +1,6 @@
 package pakete;
 
+import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
@@ -17,12 +18,15 @@ public class Editor {
 
     //  Spike spike = new Spike(700, 300, 500, 200, 300, 400);
 
-    public void createObjects(float x, float y, ArrayList<Spike> spikeListe, ArrayList<Floor> floorList) {
-        Floor floor = null;
+    public void createObjects(float x, float y, ArrayList<Spike> spikeListe, ArrayList<Floor> floorList, PApplet p) {
+        //PApplet p;
+
         switch (objectIndex) {
 
             case 0:
-                floorList.add(new Floor(new PImage(),x,y));
+                PImage floorImage = p.loadImage("resources/floor.png");
+               // floorList.add(new Floor(new PImage(),x,y));
+                floorList.add(new Floor(floorImage,x,y));
                 break;
             case 1:
             spikeListe.add(new Spike(x, y, x - 20, y + 30, x + 20, y + 30));

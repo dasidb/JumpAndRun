@@ -73,6 +73,7 @@ public class SpielStarten extends PApplet {
 		// erschaffeHindernisse();
 		erschaffeSpike();
 		erschaffeWelt();
+		erschaffeFloor();
 
 
 	}
@@ -104,9 +105,9 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void erschaffeFloor(){
-		PImage p = new PImage();
-		floor = new Floor(p = loadImage("resources/floor.png"),1,1);
-		floorList.add(floor);
+		//PImage p = new PImage();
+		//floor = new Floor(p = loadImage("resources/floor.png"),1,1);
+		//floorList.add(floor);
 	}
 
 	public Bullet erschaffeBullet() {
@@ -119,11 +120,12 @@ public class SpielStarten extends PApplet {
 	public void setup() {
 		super.setup();
 		System.out.println("hier ist setup");
+		floorList = new ArrayList<>();
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
 		bulletList = new ArrayList<>();
 		editor = new Editor();
-		floorList = new ArrayList<>();
+
 
 		System.out.println(held);
 		held.getNonTransparentPixel();
@@ -343,7 +345,7 @@ public class SpielStarten extends PApplet {
 		if(mouseButton == LEFT) {
 			System.out.println("Mouse Clicked left");
 
-			editor.createObjects((float) mouseX,(float) mouseY,spikeListe,floorList);
+			editor.createObjects((float) mouseX,(float) mouseY,spikeListe,floorList,this);
 		}
 		if(mouseButton == RIGHT) {
 			System.out.println("Mouse Clicked right");

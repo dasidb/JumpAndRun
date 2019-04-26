@@ -31,6 +31,8 @@ public class SpielStarten extends PApplet {
 	private float gravity = 8F;
 	private boolean shoot;
 	private int testValue = 0;
+	private boolean test;
+
 
 
 	public boolean isShoot() {
@@ -148,9 +150,15 @@ public class SpielStarten extends PApplet {
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
 		//gravity();
 		move();
-		gravitation();
-
+		if(!held.isCooliding()) {
+			gravitation();
+		}
+		//held.setCooliding(false);
+		kollisionFloor();
 		held.springen(this);
+		text("x" + held.getPositionX(),20,20);
+		text("y" + held.getPositionY(),20,50);
+
 
 		for(Floor f : floorList){
 			f.setImage(loadImage("resources/floor.png"));
@@ -192,7 +200,7 @@ public class SpielStarten extends PApplet {
 					&& held.getPositionY() - c.getTriangleY3() < kollisionDistance
 					&& held.getPositionY() - c.getTriangleY3() > -kollisionDistance)) {
 
-				if (kollision(c) == true) {
+				if (kollisionSpike(c) == true) {
 				}
 			}
 
@@ -207,9 +215,43 @@ public class SpielStarten extends PApplet {
 		}
 
 	}
+	public void kollisionFloor() {
+		vecp = new PVector((int) held.getPositionX(),(int) held.getPositionY());
 
+		for(PVector p : held.getPixelList()){
+		for (Floor floortest : floorList) {
+			//System.out.println("posi x" +floortest.getPosiX());
+			//System.out.println("posi y" + floortest.getPosiY());
+			//System.out.println("floor width" + floortest.getImage().width);
+			//System.out.println("floor height" + floortest.getImage().height);
+			//System.out.println(floorList.get(floorList.size()));
+			//if((held.getPositionX() >= floortest.getPosiX() &&  held.getPositionX() <= (floortest.getPosiX() +floortest.getImage().width)) && (held.getPositionY() >= floortest.getPosiY() && held.getPositionY() <= (floortest.getPosiY() + floortest.getImage().height))){
+			//	System.out.println("bla");
+			//}
+			if (((p.x + held.getPositionX())  >= floortest.getPosiX() && (p.x + held.getPositionX()) <= (floortest.getPosiX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPosiY() && (p.y + held.getPositionY()) <= (floortest.getPosiY() + floortest.getImage().height))) {
+				System.out.println("bla");
+				held.setCooliding(true);
+				held.setJumpCount(2);
+				setGravity(0);
+				held.setPositionY(floortest.getPosiY()-held.getImg().height);
+				held.setJumping(false);
 
-	public boolean kollision(Spike spike) {
+			}
+			if((p.x + held.getPositionX()) < floortest.getPosiX() || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width))){
+				held.setCooliding(false);
+				System.out.println("test");
+			}
+		}
+		}
+	//	for (Floor floortest : floorList) {
+	//		System.out.println(floortest.getPixelList());
+	//		if (floortest.getPixelList().contains(vecp)) {
+	//			System.out.println("bla");
+	//		}
+	//	}
+	}
+
+	public boolean kollisionSpike(Spike spike) {
 
 		veca = new PVector(spike.getTriangleX1(), spike.getTriangleY1());
 

@@ -26,7 +26,9 @@ public class Editor {
             case 0:
                 PImage floorImage = p.loadImage("resources/floor.png");
                // floorList.add(new Floor(new PImage(),x,y));
-                floorList.add(new Floor(floorImage,x,y));
+                floorList.add(new Floor (floorImage,x,y));
+
+
                 break;
             case 1:
             spikeListe.add(new Spike(x, y, x - 20, y + 30, x + 20, y + 30));

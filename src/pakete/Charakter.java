@@ -21,6 +21,15 @@ public class Charakter {
     private float jumpHeight;
     private boolean falling;
     private int test;
+    private boolean cooliding = false;
+
+    public boolean isCooliding() {
+        return cooliding;
+    }
+
+    public void setCooliding(boolean cooliding) {
+        this.cooliding = cooliding;
+    }
 
     public int getT() {
         return t;
@@ -150,6 +159,7 @@ public class Charakter {
     public void springen(SpielStarten s) {
 
         if (jumping == true && maxJump == false && jumpCount > 0) {
+            setCooliding(false);
             s.setGravity(8F);
             test = 1;
             if (jumpTime + velocity > s.getGravity()) {

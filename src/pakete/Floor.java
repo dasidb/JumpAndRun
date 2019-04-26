@@ -17,6 +17,13 @@ public class Floor {
     private ArrayList<PVector> valueList = new ArrayList<>();
     private int countValue = 0;
 
+    public ArrayList<PVector> getPixelList() {
+        return pixelList;
+    }
+
+    public void setPixelList(ArrayList<PVector> pixelList) {
+        this.pixelList = pixelList;
+    }
 
     public PImage getImage() {
         return image;
@@ -61,7 +68,7 @@ public class Floor {
             System.out.println(getPosiX());
         System.out.println(getPosiY());
         System.out.println(pixelList.size());
-        for (int i = 0; i < image.height; i++) {
+        for (int i = 0; i < 1; i++) {
 
             for (int c = 0; c < image.width; c++) {
 
@@ -79,7 +86,7 @@ public class Floor {
 
                     pixelList.add(p);
 
-               // System.out.println(pixelList.size());
+                System.out.println(pixelList.size());
                 }
 
                 //System.out.println("das ist C " + c + "\n" + "das ist i" + i);
@@ -89,7 +96,7 @@ public class Floor {
         }
     for (PVector f : pixelList) {
         valueList.add(countValue,f);
-       System.out.println(valueList.size());
+      // System.out.println(valueList.size());
         countValue ++;
     }
     }

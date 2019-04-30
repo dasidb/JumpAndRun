@@ -12,6 +12,8 @@ public class Charakter {
     private float positionX;
     private float positionY;
     private ArrayList<PVector> pixelList;
+    private ArrayList<PVector> pixelListTop;
+    private ArrayList<PVector> pixelListBottom;
     private int t;
     private int jumpCount = 2;
     private float jumpTime = 1 / 30F;
@@ -22,6 +24,22 @@ public class Charakter {
     private boolean falling;
     private int test;
     private boolean cooliding = false;
+
+    public ArrayList<PVector> getPixelListTop() {
+        return pixelListTop;
+    }
+
+    public void setPixelListTop(ArrayList<PVector> pixelListTop) {
+        this.pixelListTop = pixelListTop;
+    }
+
+    public ArrayList<PVector> getPixelListBottom() {
+        return pixelListBottom;
+    }
+
+    public void setPixelListBottom(ArrayList<PVector> pixelListBottom) {
+        this.pixelListBottom = pixelListBottom;
+    }
 
     public boolean isCooliding() {
         return cooliding;
@@ -191,6 +209,9 @@ public class Charakter {
         public void getNonTransparentPixel () {
 
             pixelList = new ArrayList<PVector>();
+            pixelListTop = new ArrayList<PVector>();
+            pixelListBottom = new ArrayList<PVector>();
+
             for (int i = 0; i < img.height; i++) {
 
                 for (int c = 0; c < img.width; c++) {
@@ -207,6 +228,12 @@ public class Charakter {
                     if (alpha > 100) {
                         PVector p = new PVector(c, i);
                         pixelList.add(p);
+                        if (i == 4){
+                            pixelListTop.add(p);
+                        }
+                        if(i == img.height -2){
+                            pixelListBottom.add(p);
+                        }
 
                     }
 

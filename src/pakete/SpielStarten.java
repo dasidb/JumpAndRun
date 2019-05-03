@@ -221,50 +221,40 @@ public class SpielStarten extends PApplet {
 
 			// wenn w key gedrückt boolean setzen so das es nicht durchfällt!
 		for(PVector p : held.getPixelListBottom()){
-			if(key == 'w') {
-				key = 'z';
-				break;
 
-			}
+
+
 		for (Floor floortest : floorList) {
-			if(key == 'w') {
-				key = 'z';
-				break;
 
-			}
+			if (floortest.getPosiY() - held.getPositionY() < 50 && floortest.getPosiY() - held.getPositionY() > 10 && floortest.getPosiX() - held.getPositionX() < 20 && (floortest.getPosiX() + floortest.getImage().width) - held.getPositionX() > -20) {
+				if (((p.x + held.getPositionX()) >= floortest.getPosiX() && (p.x + held.getPositionX()) <= (floortest.getPosiX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPosiY()) && (p.y + held.getPositionY()) <= (floortest.getPosiY() + 10)) {
+					System.out.println("bla");
+					held.setCooliding(true);
+					held.setJumpCount(2);
+					setGravity(1.5F);
+					held.setPositionY(floortest.getPosiY() - held.getImg().height);
 
-		if (floortest.getPosiY() - held.getPositionY() < 50 && floortest.getPosiY() - held.getPositionY() > 10 && floortest.getPosiX() - held.getPositionX() < 20 && (floortest.getPosiX() + floortest.getImage().width) - held.getPositionX() >-20) {
-			if (((p.x + held.getPositionX()) >= floortest.getPosiX() && (p.x + held.getPositionX()) <= (floortest.getPosiX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPosiY()) && (p.y + held.getPositionY()) <= (floortest.getPosiY() + 10)) {
-				System.out.println("bla");
-				held.setCooliding(true);
-				held.setJumpCount(2);
-				setGravity(0);
-				held.setPositionY(floortest.getPosiY() - held.getImg().height);
-				held.setJumping(false);
-				if(key == 'w') {
-					key = 'z';
-					break;
-
-				}
-
-
-			} else if (((p.x + held.getPositionX() ) < floortest.getPosiX() || ((p.x + held.getPositionX() ) > (floortest.getPosiX() + floortest.getImage().width)))) {
-				//else if (( floortest.getPosiX() - (p.x + held.getPositionX()) < 10 || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
-
-				held.setCooliding(false);
-				System.out.println("test");
-					if(key == 'w') {
-						key = 'z';
-						break;
+					//warum köst es das problem?
+					if(held.isJumping()){
+						held.setJumping(true);
 					}
 
 
-			}
-			if(key == 'w'){
-				break;
+
+				} //else if (((p.x + held.getPositionX()) < floortest.getPosiX() || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
+					//else if (( floortest.getPosiX() - (p.x + held.getPositionX()) < 10 || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
+					else{
+					held.setCooliding(false);
+					System.out.println(held.getJumpTime());
+
+
+
+				}
+
+				}
 			}
 		}
-		}
+
 
 
 
@@ -315,7 +305,7 @@ public class SpielStarten extends PApplet {
 				}
 			}
 	*/	}
-		}
+
 
 	//	for (Floor floortest : floorList) {
 	//		System.out.println(floortest.getPixelList());

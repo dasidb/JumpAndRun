@@ -32,6 +32,8 @@ public class SpielStarten extends PApplet {
 	private boolean shoot;
 	private int testValue = 0;
 	private boolean test;
+	private boolean showgrid;
+	private int scalevalue = 40;
 
 
 
@@ -127,7 +129,7 @@ public class SpielStarten extends PApplet {
 		spike.erschaffeSpike(this, spikeListe);
 		bulletList = new ArrayList<>();
 		editor = new Editor();
-
+		editor.createGrid(this,40);
 
 		System.out.println(held);
 		held.getNonTransparentPixel();
@@ -154,6 +156,17 @@ public class SpielStarten extends PApplet {
 		if(!held.isCooliding()) {
 			gravitation();
 		}
+		if(showgrid){
+			stroke(163,190,190,50);
+			//strokeWeight(20);
+			for(Integer i : editor.getGridList()){
+
+				line(0,i,i+width,i);
+				line(i,0,i,i+height);
+			}
+			System.out.println("test");
+		}
+		//line(10,10,60,60);
 		//held.setCooliding(false);
 		kollisionFloor();
 		held.springen(this);
@@ -235,9 +248,9 @@ public class SpielStarten extends PApplet {
 					held.setPositionY(floortest.getPosiY() - held.getImg().height);
 
 					//warum köst es das problem?
-					if(held.isJumping()){
-						held.setJumping(true);
-					}
+					//if(held.isJumping()){
+					//	held.setJumping(true);
+					//}
 
 
 
@@ -409,6 +422,29 @@ public class SpielStarten extends PApplet {
 			if (key == 'y') {
 			bulletList.add(erschaffeBullet());
 				setShoot(true);
+			}
+			if (key == 't') {
+				if(showgrid){
+					showgrid = false;
+
+				}else {
+					showgrid = true;
+				}
+
+			}
+			if (key == 'r') {
+				if(scalevalue >20) {
+					scalevalue -= 20;
+					editor.createGrid(this, scalevalue);
+				}
+			}
+			if (key == 'z') {
+
+
+					scalevalue += 20;
+
+				System.out.println(scalevalue);
+				editor.createGrid(this,scalevalue);
 			}
 		}
 	}

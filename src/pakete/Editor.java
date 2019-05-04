@@ -14,6 +14,15 @@ public class Editor {
     private PVector vecm;
     private ArrayList<Spike> removeSpikeList;
     private int objectIndex = 0;
+    ArrayList<Integer> gridList;
+
+    public ArrayList<Integer> getGridList() {
+        return gridList;
+    }
+
+    public void setGridList(ArrayList<Integer> gridList) {
+        this.gridList = gridList;
+    }
 
 
     //  Spike spike = new Spike(700, 300, 500, 200, 300, 400);
@@ -79,6 +88,15 @@ public class Editor {
         for(Spike s : removeSpikeList){
             spikeList.remove(s);
         }
+    }
+
+    public void createGrid(PApplet p, int scale){
+        gridList = new ArrayList<>();
+        for(int i = 0; i < p.height; i += scale){
+            gridList.add(i);
+        }
+        System.out.println(gridList.size());
+
     }
     }
 

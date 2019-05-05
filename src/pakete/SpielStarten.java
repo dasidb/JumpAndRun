@@ -153,6 +153,7 @@ public class SpielStarten extends PApplet {
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
 		//gravity();
 		move();
+
 		if(!held.isCooliding()) {
 			gravitation();
 		}
@@ -487,8 +488,8 @@ public class SpielStarten extends PApplet {
 		if(mouseButton == LEFT) {
 			System.out.println("Mouse Clicked left");
 
-			editor.createObjects((float) mouseX,(float) mouseY,spikeListe,floorList,this);
-		}
+			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue) + scalevalue,spikeListe,floorList,this);
+	}
 		if(mouseButton == RIGHT) {
 			System.out.println("Mouse Clicked right");
 			editor.deleteSpike(spikeListe, (float) mouseX, (float) mouseY);

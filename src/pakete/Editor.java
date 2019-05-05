@@ -40,6 +40,7 @@ public class Editor {
 
                 break;
             case 1:
+                y = y -30;
             spikeListe.add(new Spike(x, y, x - 20, y + 30, x + 20, y + 30));
             break;
         }

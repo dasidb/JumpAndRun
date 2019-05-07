@@ -7,7 +7,7 @@ import processing.core.PVector;
 import java.util.ArrayList;
 
 // create floor boolean colliding with jump method
-public class Floor {
+public class Floor implements Placeable{
     private PImage image;
     private float posiX;
     private float posiY;

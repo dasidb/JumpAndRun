@@ -15,6 +15,7 @@ public class Editor {
     private ArrayList<Spike> removeSpikeList;
     private int objectIndex = 0;
     ArrayList<Integer> gridList;
+    private ArrayList<Floor> removeFloorList;
 
     public ArrayList<Integer> getGridList() {
         return gridList;
@@ -59,8 +60,13 @@ public class Editor {
         }
   //  }
 
-    public void deleteSpike(ArrayList<Spike> spikeList,float x ,float y) {
+    public void deleteSpike(ArrayList<Spike> spikeList,float x ,float y, ArrayList<Floor> floorList) {
+
+
+            removeFloorList = new ArrayList<>();
             removeSpikeList = new ArrayList<>();
+
+
         for (Spike spike : spikeList) {
             veca = new PVector(spike.getTriangleX1(), spike.getTriangleY1());
 
@@ -89,6 +95,21 @@ public class Editor {
         for(Spike s : removeSpikeList){
             spikeList.remove(s);
         }
+
+
+        for(Floor floor : floorList){
+            System.out.println("kommt an");
+            if(floor.getPosiX() < x && x < (floor.getPosiX() + floor.getImage().width) && floor.getPosiY() < y && y < (floor.getPosiY() + floor.getImage().height)){
+                removeFloorList.add(floor);
+                System.out.println("test");
+            }
+
+        }
+        for(Floor f : removeFloorList){
+            floorList.remove(f);
+        }
+
+
     }
 
     public void createGrid(PApplet p, int scale){

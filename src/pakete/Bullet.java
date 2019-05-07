@@ -36,6 +36,14 @@ public class Bullet {
         return positionY;
     }
 
+    public float getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
+    }
+
     public void setPositionY(float positionY) {
         this.positionY = positionY;
     }
@@ -58,11 +66,11 @@ public class Bullet {
         this.positionY = positionY;
         this.schaden = schaden;
         this.velocity = velocity;
-        p.image(this.img, this.positionX, this.positionY);
+       // p.image(this.img, this.positionX, this.positionY);
     }
 
     public void bulletMove(Bullet b) {
 
-        b.setPositionX(b.getPositionX() + 15);
+        b.setPositionX(b.getPositionX() + b.getVelocity());
     }
 }

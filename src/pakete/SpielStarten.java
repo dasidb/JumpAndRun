@@ -34,6 +34,7 @@ public class SpielStarten extends PApplet {
 	private boolean test;
 	private boolean showgrid;
 	private int scalevalue = 40;
+	private ArrayList<Integer> lastMovement = new ArrayList<>();
 
 
 
@@ -116,7 +117,12 @@ public class SpielStarten extends PApplet {
 
 	public Bullet erschaffeBullet() {
 		PImage bulletImage = loadImage("resources/bullet.png");
-		bullet = new Bullet(bulletImage,held.getPositionX()+50,held.getPositionY()+50,2,20,this);
+		if(lastMovement.get(0) == 0){
+			bullet = new Bullet(bulletImage,held.getPositionX()-10,held.getPositionY()+10,2,-20,this);
+
+		}else {
+			bullet = new Bullet(bulletImage, held.getPositionX() + 10, held.getPositionY() + 10, 2, 20, this);
+		}
 		System.out.println("test1234");
 		return bullet;
 	}
@@ -149,6 +155,7 @@ public class SpielStarten extends PApplet {
 	}
 	@Override
 	public void draw() {
+
 		background(0);
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
 		//gravity();
@@ -165,7 +172,7 @@ public class SpielStarten extends PApplet {
 				line(0,i,i+width,i);
 				line(i,0,i,i+height);
 			}
-			System.out.println("test");
+
 		}
 		//line(10,10,60,60);
 		//held.setCooliding(false);
@@ -409,9 +416,12 @@ public class SpielStarten extends PApplet {
 		if (keyPressed) {
 			if (key == 'a') {
 				aKey = true;
+				lastMovement.add(0,0);
+
 			}
 			if (key == 'd') {
 				dKey = true;
+				lastMovement.add(0,1);
 			}
 			if (key == 'w') {
 				held.setJumping(true);
@@ -435,15 +445,17 @@ public class SpielStarten extends PApplet {
 			}
 			if (key == 'r') {
 				if(scalevalue >20) {
+
 					scalevalue -= 20;
+
 					editor.createGrid(this, scalevalue);
 				}
 			}
 			if (key == 'z') {
 
-
-					scalevalue += 20;
-
+					if(scalevalue <= 60) {
+						scalevalue += 20;
+					}
 				System.out.println(scalevalue);
 				editor.createGrid(this,scalevalue);
 			}
@@ -488,11 +500,11 @@ public class SpielStarten extends PApplet {
 		if(mouseButton == LEFT) {
 			System.out.println("Mouse Clicked left");
 
-			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue) + scalevalue,spikeListe,floorList,this);
+			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue) ,spikeListe,floorList,this);
 	}
 		if(mouseButton == RIGHT) {
 			System.out.println("Mouse Clicked right");
-			editor.deleteSpike(spikeListe, (float) mouseX, (float) mouseY);
+			editor.deleteSpike(spikeListe, (float) mouseX, (float) mouseY, floorList);
 		}
 	}
 }

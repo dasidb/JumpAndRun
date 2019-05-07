@@ -4,7 +4,7 @@ import processing.core.PApplet;
 
 import java.util.ArrayList;
 // ggf extends hinderniss
-public class Spike {
+public class Spike implements Placeable{
 
     private float triangleX1;
     private float triangleY1;

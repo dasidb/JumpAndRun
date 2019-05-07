@@ -136,7 +136,7 @@ public class SpielStarten extends PApplet {
 		bulletList = new ArrayList<>();
 		editor = new Editor();
 		editor.createGrid(this,40);
-
+		lastMovement.add(0,0);
 		System.out.println(held);
 		held.getNonTransparentPixel();
 		background(0);

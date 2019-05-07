@@ -56,6 +56,14 @@ public class Bullet {
         this.schaden = schaden;
     }
 
+    public boolean isHit() {
+        return hit;
+    }
+
+    public void setHit(boolean hit) {
+        this.hit = hit;
+    }
+
     public Bullet() {
 
     }

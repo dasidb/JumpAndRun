@@ -192,7 +192,7 @@ public class SpielStarten extends PApplet {
 				image(b.getImg(), b.getPositionX(), b.getPositionY());
 				b.bulletMove(b);
 				System.out.println(bulletList.size());
-				if(b.getPositionX() > 300){
+				if(b.getPositionX() > width || b.getPositionX() < (width - width)){
 
 					bulletIDList.add(b);
 

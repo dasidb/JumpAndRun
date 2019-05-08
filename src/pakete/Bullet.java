@@ -81,4 +81,5 @@ public class Bullet {
 
         b.setPositionX(b.getPositionX() + b.getVelocity());
     }
+
 }

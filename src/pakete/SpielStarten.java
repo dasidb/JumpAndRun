@@ -156,53 +156,32 @@ public class SpielStarten extends PApplet {
 	}
 	@Override
 	public void draw() {
-
 		background(0);
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
-
 		move();
-
 		if(!held.isCooliding()) {
 			welt.gravitation();
 		}
-
 		if(showgrid){
 			editor.showGrid(this);
 		}
-
 		kollisionFloor();
-
 		held.springen(welt);
-
 		displayFloor();
-
 		displayBullet();
 		System.out.println("test5");
 		removeBullet();
-
-
-
-
-
-
-
-		for (Spike s : spikeListe) {
-			triangle(s.getTriangleX1(), s.getTriangleY1(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
-					s.getTriangleY3());
-		}
-
+		displaySpike();
 		collisionHandler.spikeCollision();
+		collisionHandler.stopGrav();
 
+//		if (collisionHandler.isColiding()== true) {
 
+//			held.setPositionX(1);
+//			held.setPositionY(1);
+//			collisionHandler.setColiding(false);
 
-
-		if (collisionHandler.isColiding()== true) {
-
-			held.setPositionX(1);
-			held.setPositionY(1);
-			collisionHandler.setColiding(false);
-
-		}
+//		}
 
 	}
 	public void kollisionFloor() {
@@ -246,6 +225,13 @@ public class SpielStarten extends PApplet {
 		for(Floor f : floorList){
 			f.setImage(loadImage("resources/floor.png"));
 			image(f.getImage(),f.getPosiX(),f.getPosiY());
+		}
+	}
+
+	public void displaySpike(){
+		for (Spike s : spikeListe) {
+			triangle(s.getTriangleX1(), s.getTriangleY1(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
+					s.getTriangleY3());
 		}
 	}
 

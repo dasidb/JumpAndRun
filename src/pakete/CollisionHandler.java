@@ -97,4 +97,16 @@ public class CollisionHandler {
         return coliding;
 
     }
-}
+
+    public void stopGrav(){
+        if (isColiding() == true) {
+
+            held.setPositionX(1);
+            held.setPositionY(1);
+            setColiding(false);
+
+        }
+
+    }
+    }
+

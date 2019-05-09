@@ -14,6 +14,7 @@ public class SpielStarten extends PApplet {
 	private SpielWelt welt;
 	private Bullet bullet;
 	private Floor floor;
+	private CollisionHandler collisionHandler;
 	private PVector veca;
 	private PVector vecb;
 	private PVector vecc;
@@ -28,13 +29,14 @@ public class SpielStarten extends PApplet {
 	private boolean dKey;
 	private boolean sKey;
 	private boolean wKey;
-	private float gravity = 8F;
+
 	private boolean shoot;
 	private int testValue = 0;
 	private boolean test;
 	private boolean showgrid;
 	private int scalevalue = 40;
 	private ArrayList<Integer> lastMovement = new ArrayList<>();
+
 
 
 
@@ -46,13 +48,6 @@ public class SpielStarten extends PApplet {
 		this.shoot = shoot;
 	}
 
-	public float getGravity() {
-		return gravity;
-	}
-
-	public void setGravity(float gravity) {
-		this.gravity = gravity;
-	}
 
 	public ArrayList<Spike> getSpikeListe() {
 		return spikeListe;
@@ -79,8 +74,13 @@ public class SpielStarten extends PApplet {
 		erschaffeSpike();
 		erschaffeWelt();
 		erschaffeFloor();
+		erschaffeCollisionHandler();
 
 
+	}
+
+	public void erschaffeCollisionHandler(){
+		collisionHandler = new CollisionHandler(held,spikeListe,floorList);
 	}
 
 	public void erschaffeHeld() {
@@ -100,11 +100,11 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void erschaffeWelt() {
-		welt = new SpielWelt();
+		welt = new SpielWelt(held);
 	}
 
 	public void spielStarten() {
-		System.out.println("Spielstarten erreicht");
+
 
 		held.setPositionX(100);
 	}
@@ -123,7 +123,7 @@ public class SpielStarten extends PApplet {
 		}else {
 			bullet = new Bullet(bulletImage, held.getPositionX() + 10, held.getPositionY() + 10, 2, 20, this);
 		}
-		System.out.println("test1234");
+
 		return bullet;
 	}
 	@Override
@@ -131,6 +131,7 @@ public class SpielStarten extends PApplet {
 		super.setup();
 		System.out.println("hier ist setup");
 		floorList = new ArrayList<>();
+
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
 		bulletList = new ArrayList<>();
@@ -158,240 +159,125 @@ public class SpielStarten extends PApplet {
 
 		background(0);
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
-		//gravity();
+
 		move();
 
 		if(!held.isCooliding()) {
-			gravitation();
+			welt.gravitation();
 		}
+
 		if(showgrid){
-			stroke(163,190,190,50);
-			//strokeWeight(20);
-			for(Integer i : editor.getGridList()){
-
-				line(0,i,i+width,i);
-				line(i,0,i,i+height);
-			}
-
+			editor.showGrid(this);
 		}
-		//line(10,10,60,60);
-		//held.setCooliding(false);
+
 		kollisionFloor();
-		held.springen(this);
-		text("x" + held.getPositionX(),20,20);
-		text("y" + held.getPositionY(),20,50);
+
+		held.springen(welt);
+
+		displayFloor();
+
+		displayBullet();
+		System.out.println("test5");
+		removeBullet();
 
 
-		for(Floor f : floorList){
-			f.setImage(loadImage("resources/floor.png"));
-			image(f.getImage(),f.getPosiX(),f.getPosiY());
-		}
 
-			for (Bullet b : bulletList) {
 
-				image(b.getImg(), b.getPositionX(), b.getPositionY());
-				b.bulletMove(b);
-				System.out.println(bulletList.size());
-				if(b.getPositionX() > width || b.getPositionX() < (width - width)){
 
-					bulletIDList.add(b);
 
-				}
-			}
-		for(Bullet b : bulletIDList){
-			bulletList.remove(b);
-		}
-		bulletIDList = new ArrayList<>();
+
 		for (Spike s : spikeListe) {
 			triangle(s.getTriangleX1(), s.getTriangleY1(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
 					s.getTriangleY3());
 		}
-		for (Spike c : getSpikeListe()) {
-			int kollisionDistance = 90;
 
-			if (held.getPositionX() - c.getTriangleX1() < kollisionDistance
-					&& (held.getPositionX() - c.getTriangleX1() > -kollisionDistance
-					&& held.getPositionY() - c.getTriangleY1() < kollisionDistance
-					&& held.getPositionY() - c.getTriangleY1() > -kollisionDistance)
-					|| (held.getPositionX() - c.getTriangleX2() < kollisionDistance
-					&& held.getPositionX() - c.getTriangleX2() > -kollisionDistance
-					&& held.getPositionY() - c.getTriangleY2() < kollisionDistance
-					&& held.getPositionY() - c.getTriangleY2() > -kollisionDistance)
-					|| (held.getPositionX() - c.getTriangleX3() < kollisionDistance
-					&& held.getPositionX() - c.getTriangleX3() > -kollisionDistance
-					&& held.getPositionY() - c.getTriangleY3() < kollisionDistance
-					&& held.getPositionY() - c.getTriangleY3() > -kollisionDistance)) {
+		collisionHandler.spikeCollision();
 
-				if (kollisionSpike(c) == true) {
-				}
-			}
 
-		}
 
-		if (isColiding == true) {
+
+		if (collisionHandler.isColiding()== true) {
 
 			held.setPositionX(1);
 			held.setPositionY(1);
-			isColiding = false;
+			collisionHandler.setColiding(false);
 
 		}
 
 	}
 	public void kollisionFloor() {
-		vecp = new PVector((int) held.getPositionX(),(int) held.getPositionY());
+		vecp = new PVector((int) held.getPositionX(), (int) held.getPositionY());
 
-			// wenn w key gedrückt boolean setzen so das es nicht durchfällt!
-		for(PVector p : held.getPixelListBottom()){
-
-
-
-		for (Floor floortest : floorList) {
-
-			if (floortest.getPosiY() - held.getPositionY() < 50 && floortest.getPosiY() - held.getPositionY() > 10 && floortest.getPosiX() - held.getPositionX() < 20 && (floortest.getPosiX() + floortest.getImage().width) - held.getPositionX() > -20) {
-				if (((p.x + held.getPositionX()) >= floortest.getPosiX() && (p.x + held.getPositionX()) <= (floortest.getPosiX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPosiY()) && (p.y + held.getPositionY()) <= (floortest.getPosiY() + 10)) {
-					System.out.println("bla");
-					held.setCooliding(true);
-					held.setJumpCount(2);
-					setGravity(1.5F);
-					held.setPositionY(floortest.getPosiY() - held.getImg().height);
-
-					//warum köst es das problem?
-					//if(held.isJumping()){
-					//	held.setJumping(true);
-					//}
+		// wenn w key gedrückt boolean setzen so das es nicht durchfällt!
+		for (PVector p : held.getPixelListBottom()) {
 
 
+			for (Floor floortest : floorList) {
 
-				} //else if (((p.x + held.getPositionX()) < floortest.getPosiX() || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
+				if (floortest.getPosiY() - held.getPositionY() < 50 && floortest.getPosiY() - held.getPositionY() > 10 && floortest.getPosiX() - held.getPositionX() < 20 && (floortest.getPosiX() + floortest.getImage().width) - held.getPositionX() > -20) {
+					if (((p.x + held.getPositionX()) >= floortest.getPosiX() && (p.x + held.getPositionX()) <= (floortest.getPosiX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPosiY()) && (p.y + held.getPositionY()) <= (floortest.getPosiY() + 10)) {
+						System.out.println("bla");
+						held.setCooliding(true);
+						held.setJumpCount(2);
+						welt.setGravity(1.5F);
+						held.setPositionY(floortest.getPosiY() - held.getImg().height);
+
+						//warum köst es das problem?
+						//if(held.isJumping()){
+						//	held.setJumping(true);
+						//}
+
+
+					} //else if (((p.x + held.getPositionX()) < floortest.getPosiX() || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
 					//else if (( floortest.getPosiX() - (p.x + held.getPositionX()) < 10 || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
-					else{
-					held.setCooliding(false);
-					System.out.println(held.getJumpTime());
+					else {
+						held.setCooliding(false);
+						System.out.println(held.getJumpTime());
 
 
-
-				}
-
-				}
-			}
-		}
-
-
-
-
-
-
-
-
-
-
-
-
-
-		//for(PVector p : held.getPixelList()){
-		//for (Floor floortest : floorList) {
-
-
-
-			//System.out.println("posi x" +floortest.getPosiX());
-			//System.out.println("posi y" + floortest.getPosiY());
-			//System.out.println("floor width" + floortest.getImage().width);
-			//System.out.println("floor height" + floortest.getImage().height);
-			//System.out.println(floorList.get(floorList.size()));
-			//if((held.getPositionX() >= floortest.getPosiX() &&  held.getPositionX() <= (floortest.getPosiX() +floortest.getImage().width)) && (held.getPositionY() >= floortest.getPosiY() && held.getPositionY() <= (floortest.getPosiY() + floortest.getImage().height))){
-			//	System.out.println("bla");
-			//}
-			//System.out.println(floortest.getPosiY());
-
-			// einen test mit y ausführen also den check mit der x und der y koordinate ausführen
-
-			// test mit neuen arraylisen
-	/*
-			if (floortest.getPosiY() - held.getPositionY() < 50 && floortest.getPosiY() - held.getPositionY() > 10 && floortest.getPosiX() - held.getPositionX() < 20 && (floortest.getPosiX() + floortest.getImage().width) - held.getPositionX() >-20) {
-				if (((p.x + held.getPositionX()) >= floortest.getPosiX() && (p.x + held.getPositionX()) <= (floortest.getPosiX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPosiY()) && (p.y + held.getPositionY()) <= (floortest.getPosiY() + 10)) {
-					System.out.println("bla");
-					held.setCooliding(true);
-					held.setJumpCount(2);
-					setGravity(2);
-					held.setPositionY(floortest.getPosiY() - held.getImg().height);
-					held.setJumping(false);
-
-				} else if (((p.x + held.getPositionX() + 12) < floortest.getPosiX() || ((p.x + held.getPositionX() - 12) > (floortest.getPosiX() + floortest.getImage().width)))) {
-				//else if (( floortest.getPosiX() - (p.x + held.getPositionX()) < 10 || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
-
-					held.setCooliding(false);
-					System.out.println("test");
-					System.out.println(held.getJumpCount());
+					}
 
 				}
 			}
-	*/	}
+		}
+	}
 
+	public void displayFloor(){
+		for(Floor f : floorList){
+			f.setImage(loadImage("resources/floor.png"));
+			image(f.getImage(),f.getPosiX(),f.getPosiY());
+		}
+	}
 
-	//	for (Floor floortest : floorList) {
-	//		System.out.println(floortest.getPixelList());
-	//		if (floortest.getPixelList().contains(vecp)) {
-	//			System.out.println("bla");
-	//		}
-	//	}
+	public void displayBullet(){
+		for (Bullet b : bulletList) {
 
+			image(b.getImg(), b.getPositionX(), b.getPositionY());
+			b.bulletMove(b);
+			System.out.println(bulletList.size());
+			if(b.getPositionX() > width || b.getPositionX() < (width - width)){
 
-	public boolean kollisionSpike(Spike spike) {
+				bullet.getBulletIDList().add(b);
 
-		veca = new PVector(spike.getTriangleX1(), spike.getTriangleY1());
-
-		vecb = new PVector(spike.getTriangleX2(), spike.getTriangleY2());
-
-		vecc = new PVector(spike.getTriangleX3(), spike.getTriangleY3());
-
-		vecp = new PVector(held.getPositionX(), held.getPositionY());
-
-		for (PVector p : held.getPixelList()) {
-			float w1 = (veca.x * (vecc.y - veca.y) + ((vecp.y + p.y) - veca.y) * (vecc.x - veca.x)
-					- (vecp.x + p.x) * (vecc.y - veca.y))
-					/ ((vecb.y - veca.y) * (vecc.x - veca.x) - (vecb.x - veca.x) * (vecc.y - veca.y));
-
-			float w2 = ((vecp.y + p.y) - veca.y - w1 * (vecb.y - veca.y)) / (vecc.y - veca.y);
-
-
-			if (w1 >= 0 && w2 >= 0 && (w1 + w2) <= 1) {
-				isColiding = true;
-			} else {
 
 			}
 		}
-
-		return isColiding;
-
 	}
 
-	public void gravitation() {
-		if (held.getTest() == 1 && held.isJumping() == false && held.isMaxJump() == false) {
-			gravity = 0;
-			held.setTest(0);
-		}
-		if (gravity != 8) {
-			gravity += 0.5F;
-			if (gravity > 8) {
-				gravity = 8;
+	public void removeBullet() {
+		if(bullet != null){
+		if (bullet.getBulletIDList() != null) {
+			for (Bullet b : bullet.getBulletIDList()) {
+				bulletList.remove(b);
 			}
+			bulletIDList = new ArrayList<>();
 		}
-		if (held.getPositionY() < 300) {
-			// System.out.println(getHeldY());
-			held.setPositionY(held.getPositionY() + gravity);
+	}}
 
-
+		public void erschaffeSpike () {
+			spike = new Spike();
+			spikeListe = new ArrayList<>();
 		}
-		if (held.getPositionY() > 300) {
-			held.setJumpCount(2);
-		}
-
-	}
-
-	public void erschaffeSpike() {
-		spike = new Spike();
-		spikeListe = new ArrayList<>();
-	}
 
 
 	public void move() {

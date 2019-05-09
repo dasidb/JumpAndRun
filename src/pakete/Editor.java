@@ -120,5 +120,15 @@ public class Editor {
         System.out.println(gridList.size());
 
     }
+
+    public void showGrid(PApplet p){
+        p.stroke(163,190,190,50);
+        //strokeWeight(20);
+        for(Integer i : getGridList()){
+
+            p.line(0,i,i+p.width,i);
+            p.line(i,0,i,i+p.height);
+        }
+    }
     }
 

@@ -15,6 +15,15 @@ public class Bullet {
     private boolean shoot;
     private float velocity;
     private boolean hit;
+    private ArrayList<Bullet> bulletIDList = new ArrayList<>();
+
+    public ArrayList<Bullet> getBulletIDList() {
+        return bulletIDList;
+    }
+
+    public void setBulletIDList(ArrayList<Bullet> bulletIDList) {
+        this.bulletIDList = bulletIDList;
+    }
 
     public PImage getImg() {
         return img;

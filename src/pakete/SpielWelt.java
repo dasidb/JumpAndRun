@@ -7,9 +7,9 @@ import processing.core.PImage;
 import java.awt.*;
 
 public class SpielWelt {
-    private float gravity = 4f;
+    private float gravity = 8f;
     private PImage welt;
-
+    private Charakter held;
     public float getGravity() {
         return gravity;
     }
@@ -26,9 +26,41 @@ public class SpielWelt {
         this.welt = welt;
     }
 
+
+    public SpielWelt(Charakter held){
+        this.held = held;
+    }
+
+
+
+
+
     public void erschaffeWelt(PApplet p){
         PImage welt = p.loadImage("resources/hintergrund.png");
         p.image(welt,0,0);
+    }
+
+    public void gravitation() {
+        if (held.getTest() == 1 && held.isJumping() == false && held.isMaxJump() == false) {
+            gravity = 0;
+            held.setTest(0);
+        }
+        if (gravity != 8) {
+            gravity += 0.5F;
+            if (gravity > 8) {
+                gravity = 8;
+            }
+        }
+        if (held.getPositionY() < 300) {
+            // System.out.println(getHeldY());
+            held.setPositionY(held.getPositionY() + gravity);
+
+
+        }
+        if (held.getPositionY() > 300) {
+            held.setJumpCount(2);
+        }
+
     }
 
 }

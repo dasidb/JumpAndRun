@@ -174,7 +174,7 @@ public class Charakter {
         held = null;
     }
 
-    public void springen(SpielStarten s) {
+    public void springen(SpielWelt s) {
 
         if (jumping == true && maxJump == false && jumpCount > 0) {
             setCooliding(false);

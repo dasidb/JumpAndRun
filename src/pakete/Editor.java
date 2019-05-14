@@ -4,7 +4,6 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-import java.security.Key;
 import java.util.ArrayList;
 
 public class Editor {
@@ -68,7 +67,7 @@ public class Editor {
 
 
         for (Spike spike : spikeList) {
-            veca = new PVector(spike.getTriangleX1(), spike.getTriangleY1());
+            veca = new PVector(spike.getPositionX(), spike.getPositionY());
 
             vecb = new PVector(spike.getTriangleX2(), spike.getTriangleY2());
 
@@ -99,7 +98,7 @@ public class Editor {
 
         for(Floor floor : floorList){
             System.out.println("kommt an");
-            if(floor.getPosiX() < x && x < (floor.getPosiX() + floor.getImage().width) && floor.getPosiY() < y && y < (floor.getPosiY() + floor.getImage().height)){
+            if(floor.getPositionX() < x && x < (floor.getPositionX() + floor.getImage().width) && floor.getPositionY() < y && y < (floor.getPositionY() + floor.getImage().height)){
                 removeFloorList.add(floor);
                 System.out.println("test");
             }

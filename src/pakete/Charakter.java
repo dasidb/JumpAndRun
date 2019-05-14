@@ -25,6 +25,46 @@ public class Charakter {
     private int test;
     private boolean cooliding = false;
 
+    private boolean moveLeft;
+    private boolean moveRight;
+    private boolean moveDown;
+
+    private boolean shoot;
+
+    public boolean isMoveLeft() {
+        return moveLeft;
+    }
+
+    public void setMoveLeft(boolean moveLeft) {
+        this.moveLeft = moveLeft;
+    }
+
+    public boolean isMoveRight() {
+        return moveRight;
+    }
+
+    public void setMoveRight(boolean moveRight) {
+        this.moveRight = moveRight;
+    }
+
+    public boolean isMoveDown() {
+        return moveDown;
+    }
+
+    public void setMoveDown(boolean moveDown) {
+        this.moveDown = moveDown;
+    }
+
+
+
+    public boolean isShoot() {
+        return shoot;
+    }
+
+    public void setShoot(boolean shoot) {
+        this.shoot = shoot;
+    }
+
     public ArrayList<PVector> getPixelListTop() {
         return pixelListTop;
     }

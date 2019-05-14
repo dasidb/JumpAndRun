@@ -2,7 +2,6 @@ package pakete;
 
 import processing.core.PApplet;
 import processing.core.PImage;
-import processing.core.PVector;
 
 import java.util.ArrayList;
 
@@ -15,24 +14,15 @@ public class SpielStarten extends PApplet {
 	private Bullet bullet;
 	private Floor floor;
 	private CollisionHandler collisionHandler;
-	private PVector veca;
-	private PVector vecb;
-	private PVector vecc;
-	private PVector vecp;
-	private boolean isColiding;
+
 	private ArrayList<Spike> spikeListe;
 	private ArrayList<Bullet> bulletList;
 	private ArrayList<Bullet> bulletIDList = new ArrayList<>();
 	private ArrayList<Floor> floorList;
 	private static final float VELOCITY = 5;
-	private boolean aKey;
-	private boolean dKey;
-	private boolean sKey;
-	private boolean wKey;
+
 
 	private boolean shoot;
-	private int testValue = 0;
-	private boolean test;
 	private boolean showgrid;
 	private int scalevalue = 40;
 	private ArrayList<Integer> lastMovement = new ArrayList<>();
@@ -80,7 +70,8 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void erschaffeCollisionHandler(){
-		collisionHandler = new CollisionHandler(held,spikeListe,floorList);
+		System.out.println("test");
+		collisionHandler = new CollisionHandler(held,spikeListe,floorList, welt);
 	}
 
 	public void erschaffeHeld() {
@@ -142,6 +133,7 @@ public class SpielStarten extends PApplet {
 		held.getNonTransparentPixel();
 		background(0);
 		frameRate(30);
+
 		loop();
 
 
@@ -165,77 +157,43 @@ public class SpielStarten extends PApplet {
 		if(showgrid){
 			editor.showGrid(this);
 		}
-		kollisionFloor();
+		//kollisionFloor();
 		held.springen(welt);
-		displayFloor();
-		displayBullet();
-		System.out.println("test5");
+		displayMethods();
+
 		removeBullet();
-		displaySpike();
+
 		collisionHandler.spikeCollision();
 		collisionHandler.stopGrav();
-
-//		if (collisionHandler.isColiding()== true) {
-
-//			held.setPositionX(1);
-//			held.setPositionY(1);
-//			collisionHandler.setColiding(false);
-
-//		}
+		collisionHandler.kollisionFloor();
 
 	}
-	public void kollisionFloor() {
-		vecp = new PVector((int) held.getPositionX(), (int) held.getPositionY());
 
-		// wenn w key gedrückt boolean setzen so das es nicht durchfällt!
-		for (PVector p : held.getPixelListBottom()) {
-
-
-			for (Floor floortest : floorList) {
-
-				if (floortest.getPosiY() - held.getPositionY() < 50 && floortest.getPosiY() - held.getPositionY() > 10 && floortest.getPosiX() - held.getPositionX() < 20 && (floortest.getPosiX() + floortest.getImage().width) - held.getPositionX() > -20) {
-					if (((p.x + held.getPositionX()) >= floortest.getPosiX() && (p.x + held.getPositionX()) <= (floortest.getPosiX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPosiY()) && (p.y + held.getPositionY()) <= (floortest.getPosiY() + 10)) {
-						System.out.println("bla");
-						held.setCooliding(true);
-						held.setJumpCount(2);
-						welt.setGravity(1.5F);
-						held.setPositionY(floortest.getPosiY() - held.getImg().height);
-
-						//warum köst es das problem?
-						//if(held.isJumping()){
-						//	held.setJumping(true);
-						//}
-
-
-					} //else if (((p.x + held.getPositionX()) < floortest.getPosiX() || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
-					//else if (( floortest.getPosiX() - (p.x + held.getPositionX()) < 10 || ((p.x + held.getPositionX()) > (floortest.getPosiX() + floortest.getImage().width)))) {
-					else {
-						held.setCooliding(false);
-						System.out.println(held.getJumpTime());
-
-
-					}
-
-				}
-			}
-		}
-	}
 
 	public void displayFloor(){
 		for(Floor f : floorList){
 			f.setImage(loadImage("resources/floor.png"));
-			image(f.getImage(),f.getPosiX(),f.getPosiY());
+			image(f.getImage(),f.getPositionX(),f.getPositionY());
 		}
 	}
 
+	public void displayMethods(){
+		displaySpike();
+		displayFloor();
+		displayBullet();
+
+	}
 	public void displaySpike(){
 		for (Spike s : spikeListe) {
-			triangle(s.getTriangleX1(), s.getTriangleY1(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
+			triangle(s.getPositionX(), s.getPositionY(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
 					s.getTriangleY3());
 		}
 	}
 
 	public void displayBullet(){
+		if(isShoot()){
+			bulletList.add(erschaffeBullet());
+		}
 		for (Bullet b : bulletList) {
 
 			image(b.getImg(), b.getPositionX(), b.getPositionY());
@@ -266,17 +224,18 @@ public class SpielStarten extends PApplet {
 		}
 
 
+
 	public void move() {
-		if (aKey == true) {
+		if (held.isMoveLeft() == true) {
 			held.setPositionX(held.getPositionX() - VELOCITY);
 		}
-		if (dKey == true) {
+		if (held.isMoveRight() == true) {
 			held.setPositionX(held.getPositionX() + VELOCITY);
 		}
-		if (wKey == true) {
-			held.setPositionY(held.getPositionY() - VELOCITY);
-		}
-		if (sKey == true) {
+		//if (wKey == true) {
+		//	held.setPositionY(held.getPositionY() - VELOCITY);
+	//	}
+		if (held.isMoveDown() == true) {
 			held.setPositionY(held.getPositionY() + VELOCITY);
 		}
 
@@ -287,12 +246,12 @@ public class SpielStarten extends PApplet {
 	public void keyPressed() {
 		if (keyPressed) {
 			if (key == 'a') {
-				aKey = true;
+				held.setMoveLeft(true);
 				lastMovement.add(0,0);
 
 			}
 			if (key == 'd') {
-				dKey = true;
+				held.setMoveRight(true);
 				lastMovement.add(0,1);
 			}
 			if (key == 'w') {
@@ -300,10 +259,11 @@ public class SpielStarten extends PApplet {
 			}
 
 			if (key == 's') {
-				sKey = true;
+				held.setMoveDown(true);
 			}
+
 			if (key == 'y') {
-			bulletList.add(erschaffeBullet());
+
 				setShoot(true);
 			}
 			if (key == 't') {
@@ -337,10 +297,10 @@ public class SpielStarten extends PApplet {
 	@Override
 	public void keyReleased() {
 		if (key == 'a') {
-			aKey = false;
+			held.setMoveLeft(false);
 		}
 		if (key == 'd') {
-			dKey = false;
+			held.setMoveRight(false);
 		}
 		if (key == 'w') {
 			held.setJumping(false);
@@ -349,7 +309,7 @@ public class SpielStarten extends PApplet {
 			held.setJumpCount(held.getJumpCount() - 1);
 		}
 		if (key == 's') {
-			sKey = false;
+			held.setMoveDown(false);
 
 		}
 		if (key == 'y') {

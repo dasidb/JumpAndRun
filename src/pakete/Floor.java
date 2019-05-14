@@ -1,18 +1,17 @@
 package pakete;
 
-import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
 import java.util.ArrayList;
 
 // create floor boolean colliding with jump method
-public class Floor implements Placeable{
-    private PImage image;
-    private float posiX;
-    private float posiY;
-    private int t;
-    private ArrayList<PVector> pixelList = new ArrayList<>();
+public class Floor extends Placeable{
+  //  private PImage image;
+  //  private float positionX;
+  //  private float positionY;
+   // private int t;
+  //  private ArrayList<PVector> pixelList = new ArrayList<>();
     boolean cooliding;
     private ArrayList<PVector> valueList = new ArrayList<>();
     private int countValue = 0;
@@ -33,40 +32,44 @@ public class Floor implements Placeable{
         this.image = image;
     }
 
-    public float getPosiX() {
-        return posiX;
+    public float getPositionX() {
+        return positionX;
     }
 
-    public void setPosiX(float posiX) {
-        this.posiX = posiX;
+    public void setPositionX(float positionX) {
+        this.positionX = positionX;
     }
 
-    public float getPosiY() {
-        return posiY;
+    public float getPositionY() {
+        return positionY;
     }
 
-    public void setPosiY(float posiY) {
-        this.posiY = posiY;
+    public void setPositionY(float positionY) {
+        this.positionY = positionY;
     }
 
     public Floor(PImage image, float posiX, float posiY) {
 
         this.image = image;
-        this.posiX = posiX;
-        this.posiY = posiY;
+        this.positionX = posiX;
+        this.positionY = posiY;
         getNonTransparentPixel();
+
     }
 
     public Floor(float posiX, float posiY) {
 
-        this.posiX = posiX;
-        this.posiY = posiY;
+        this.positionX = posiX;
+        this.positionY = posiY;
 
     }
+@Override
     public void getNonTransparentPixel () {
 
-            System.out.println(getPosiX());
-        System.out.println(getPosiY());
+        super.getNonTransparentPixel();
+/*
+            System.out.println(getPositionX());
+        System.out.println(getPositionY());
         System.out.println(pixelList.size());
         for (int i = 0; i < 1; i++) {
 
@@ -82,7 +85,7 @@ public class Floor implements Placeable{
                 //System.out.println(alpha);
                 //16777215
                 if (alpha > 100) {
-                    PVector p = new PVector((c+getPosiX()), (i+getPosiY()));
+                    PVector p = new PVector((c+ getPositionX()), (i+ getPositionY()));
 
                     pixelList.add(p);
 
@@ -93,12 +96,14 @@ public class Floor implements Placeable{
 
 
             }
-        }
-    for (PVector f : pixelList) {
-        valueList.add(countValue,f);
-      // System.out.println(valueList.size());
-        countValue ++;
-    }
+        } */
+
+        // unsicher ob nötig
+  //  for (PVector f : pixelList) {
+ //       valueList.add(countValue,f);
+ //      System.out.println("gucken");
+  //      countValue ++;
+   // }
     }
     }
 

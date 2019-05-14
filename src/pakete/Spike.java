@@ -4,10 +4,10 @@ import processing.core.PApplet;
 
 import java.util.ArrayList;
 // ggf extends hinderniss
-public class Spike implements Placeable{
+public class Spike {
 
-    private float triangleX1;
-    private float triangleY1;
+    private float positionX;
+    private float positionY;
     private float triangleX2;
     private float triangleY2;
     private float triangleX3;
@@ -25,20 +25,20 @@ public class Spike implements Placeable{
         return triangleX2;
     }
 
-    public float getTriangleX1() {
-		return triangleX1;
+    public float getPositionX() {
+		return positionX;
 	}
 
-	public void setTriangleX1(float valueX1) {
-		this.triangleX1 = valueX1;
+	public void setPositionX(float valueX1) {
+		this.positionX = valueX1;
 	}
 
-	public float getTriangleY1() {
-		return triangleY1;
+	public float getPositionY() {
+		return positionY;
 	}
 
-	public void setTriangleY1(float valueY1) {
-		this.triangleY1 = valueY1;
+	public void setPositionY(float valueY1) {
+		this.positionY = valueY1;
 	}
 
 	public void setTriangleX2(float groeßeX2) {
@@ -73,21 +73,20 @@ public class Spike implements Placeable{
 
     public Spike(float valueX1, float valueY1, float valueX2, float valueY2, float valueX3, float valueY3) {
     	super();
-    	this.triangleX1 = valueX1;
-    	this.triangleY1 = valueY1;
+    	this.positionX = valueX1;
+    	this.positionY = valueY1;
     	this.triangleX2 = valueX2;
     	this.triangleY2 = valueY2;
     	this.triangleX3 = valueX3;
     	this.triangleY3 = valueY3;
     }
-    
-    
-    
 
     public Spike(){
 
     }
-
+    public Spike(float valueX1, float ValueY1) {
+        this(valueX1,ValueY1,valueX1-20,ValueY1+30,valueX1+20,ValueY1+30);
+    }
     
 
 	public void erschaffeSpike(PApplet p, ArrayList<Spike> spikeListe){

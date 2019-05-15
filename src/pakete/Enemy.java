@@ -11,5 +11,5 @@ public class Enemy {
     private float positionX;
     private float positionY;
     private ArrayList<Enemy> enemyList;
-
+    private boolean test;
 }

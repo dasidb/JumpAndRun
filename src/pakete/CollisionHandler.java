@@ -11,6 +11,7 @@ public class CollisionHandler {
     private SpielWelt welt;
     private ArrayList<Spike> spikeListe;
     private ArrayList<Floor> floorList;
+    private ArrayList<Placeable> placeableList;
     //   private boolean spikeCollisionCheck;
     private boolean coliding;
 
@@ -39,35 +40,39 @@ public class CollisionHandler {
         this.floorList = floorList;
     }
 
-    public CollisionHandler(Charakter held, ArrayList<Spike> spikeListe, ArrayList<Floor> floorList, SpielWelt welt) {
+    public CollisionHandler(Charakter held, ArrayList<Spike> spikeListe, ArrayList<Floor> floorList, SpielWelt welt, ArrayList<Placeable> placeableList) {
         this.held = held;
         this.spikeListe = spikeListe;
         this.floorList = floorList;
         this.welt = welt;
+        this.placeableList= placeableList;
     }
 
 
     public void spikeCollision() {
-        for (Spike c : getSpikeListe()) {
-            int kollisionDistance = 65;
+        for (Placeable c : placeableList) {
+            if (c instanceof Spike) {
 
-            if (held.getPositionX() - c.getPositionX() < kollisionDistance
-                    && (held.getPositionX() - c.getPositionX() > -kollisionDistance
-                    && held.getPositionY() - c.getPositionY() < kollisionDistance
-                    && held.getPositionY() - c.getPositionY() > -kollisionDistance)
-                    || (held.getPositionX() - c.getTriangleX2() < kollisionDistance
-                    && held.getPositionX() - c.getTriangleX2() > -kollisionDistance
-                    && held.getPositionY() - c.getTriangleY2() < kollisionDistance
-                    && held.getPositionY() - c.getTriangleY2() > -kollisionDistance)
-                    || (held.getPositionX() - c.getTriangleX3() < kollisionDistance
-                    && held.getPositionX() - c.getTriangleX3() > -kollisionDistance
-                    && held.getPositionY() - c.getTriangleY3() < kollisionDistance
-                    && held.getPositionY() - c.getTriangleY3() > -kollisionDistance)) {
-                System.out.println("test");
-                if (spikeCollisionCheck(c) == true) {
+                int kollisionDistance = 65;
+
+                if (held.getPositionX() - c.getPositionX() < kollisionDistance
+                        && (held.getPositionX() - c.getPositionX() > -kollisionDistance
+                        && held.getPositionY() - c.getPositionY() < kollisionDistance
+                        && held.getPositionY() - c.getPositionY() > -kollisionDistance)
+                        || (held.getPositionX() - ((Spike) c).getTriangleX2() < kollisionDistance
+                        && held.getPositionX() - ((Spike) c).getTriangleX2() > -kollisionDistance
+                        && held.getPositionY() - ((Spike) c).getTriangleY2() < kollisionDistance
+                        && held.getPositionY() - ((Spike) c).getTriangleY2() > -kollisionDistance)
+                        || (held.getPositionX() - ((Spike) c).getTriangleX3() < kollisionDistance
+                        && held.getPositionX() - ((Spike) c).getTriangleX3() > -kollisionDistance
+                        && held.getPositionY() - ((Spike) c).getTriangleY3() < kollisionDistance
+                        && held.getPositionY() - ((Spike) c).getTriangleY3() > -kollisionDistance)) {
+                    System.out.println("test");
+                    if (spikeCollisionCheck(((Spike) c)) == true) {
+                    }
                 }
-            }
 
+            }
         }
     }
 

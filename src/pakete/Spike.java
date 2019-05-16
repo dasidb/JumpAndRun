@@ -4,10 +4,8 @@ import processing.core.PApplet;
 
 import java.util.ArrayList;
 // ggf extends hinderniss
-public class Spike {
+public class Spike extends Placeable{
 
-    private float positionX;
-    private float positionY;
     private float triangleX2;
     private float triangleY2;
     private float triangleX3;
@@ -25,21 +23,9 @@ public class Spike {
         return triangleX2;
     }
 
-    public float getPositionX() {
-		return positionX;
-	}
 
-	public void setPositionX(float valueX1) {
-		this.positionX = valueX1;
-	}
 
-	public float getPositionY() {
-		return positionY;
-	}
 
-	public void setPositionY(float valueY1) {
-		this.positionY = valueY1;
-	}
 
 	public void setTriangleX2(float groeßeX2) {
         this.triangleX2 = groeßeX2;
@@ -72,9 +58,8 @@ public class Spike {
 
 
     public Spike(float valueX1, float valueY1, float valueX2, float valueY2, float valueX3, float valueY3) {
-    	super();
-    	this.positionX = valueX1;
-    	this.positionY = valueY1;
+    	super(valueX1,valueY1);
+
     	this.triangleX2 = valueX2;
     	this.triangleY2 = valueY2;
     	this.triangleX3 = valueX3;
@@ -84,8 +69,8 @@ public class Spike {
     public Spike(){
 
     }
-    public Spike(float valueX1, float ValueY1) {
-        this(valueX1,ValueY1,valueX1-20,ValueY1+30,valueX1+20,ValueY1+30);
+    public Spike(float valueX1, float valueY1) {
+        this(valueX1,valueY1,valueX1 -20,valueY1 + 30,valueX1 + 20, valueY1 +30);
     }
     
 

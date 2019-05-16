@@ -14,10 +14,12 @@ public class SpielStarten extends PApplet {
 	private Bullet bullet;
 	private Floor floor;
 	private CollisionHandler collisionHandler;
+	private Placeable placeable;
 
 	private ArrayList<Spike> spikeListe;
 	private ArrayList<Bullet> bulletList;
 	private ArrayList<Bullet> bulletIDList = new ArrayList<>();
+	private ArrayList<Placeable> placebleList = new ArrayList<>();
 	private ArrayList<Floor> floorList;
 	private static final float VELOCITY = 5;
 
@@ -65,13 +67,17 @@ public class SpielStarten extends PApplet {
 		erschaffeWelt();
 		erschaffeFloor();
 		erschaffeCollisionHandler();
-
+        erschaffePlacable();
 
 	}
 
+	public void erschaffePlacable(){
+	  //  placeable = new Placeable();
+    }
+
 	public void erschaffeCollisionHandler(){
 		System.out.println("test");
-		collisionHandler = new CollisionHandler(held,spikeListe,floorList, welt);
+		collisionHandler = new CollisionHandler(held,spikeListe,floorList, welt,placebleList);
 	}
 
 	public void erschaffeHeld() {
@@ -126,8 +132,8 @@ public class SpielStarten extends PApplet {
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
 		bulletList = new ArrayList<>();
-		editor = new Editor();
-		editor.createGrid(this,40);
+		editor = new Editor(this,placebleList);
+		editor.createGrid(40);
 		lastMovement.add(0,0);
 		System.out.println(held);
 		held.getNonTransparentPixel();
@@ -148,6 +154,7 @@ public class SpielStarten extends PApplet {
 	}
 	@Override
 	public void draw() {
+
 		background(0);
 		image(held.getImg(), held.getPositionX(), held.getPositionY());
 		move();
@@ -155,7 +162,7 @@ public class SpielStarten extends PApplet {
 			welt.gravitation();
 		}
 		if(showgrid){
-			editor.showGrid(this);
+			editor.showGrid();
 		}
 		//kollisionFloor();
 		held.springen(welt);
@@ -164,8 +171,11 @@ public class SpielStarten extends PApplet {
 		removeBullet();
 
 		collisionHandler.spikeCollision();
+
 		collisionHandler.stopGrav();
 		collisionHandler.kollisionFloor();
+
+		editor.testdraw((float) mouseX,(float) mouseY);
 
 	}
 
@@ -175,6 +185,13 @@ public class SpielStarten extends PApplet {
 			f.setImage(loadImage("resources/floor.png"));
 			image(f.getImage(),f.getPositionX(),f.getPositionY());
 		}
+		for(Placeable c : placebleList){
+		    if(c instanceof Floor){
+		        c.setImage(loadImage("resources/floor.png"));
+		        image(c.getImage(),c.getPositionX(),c.getPositionY());
+
+            }
+        }
 	}
 
 	public void displayMethods(){
@@ -184,10 +201,15 @@ public class SpielStarten extends PApplet {
 
 	}
 	public void displaySpike(){
-		for (Spike s : spikeListe) {
-			triangle(s.getPositionX(), s.getPositionY(), s.getTriangleX2(), s.getTriangleY2(), s.getTriangleX3(),
-					s.getTriangleY3());
-		}
+		for (Placeable s : placebleList) {
+            if (s instanceof Spike) {
+
+                triangle(s.getPositionX(), s.getPositionY(), ((Spike) s).getTriangleX2(), ((Spike) s).getTriangleY2(), ((Spike) s).getTriangleX3(),
+                        ((Spike) s).getTriangleY3());
+               // triangle(s.getPositionX(), s.getPositionY(), s.getPositionX() - 20, s.getPositionY() + 30, s.getPositionX() + 20, s.getPositionY() + 30);
+            }
+        }
+
 	}
 
 	public void displayBullet(){
@@ -280,7 +302,7 @@ public class SpielStarten extends PApplet {
 
 					scalevalue -= 20;
 
-					editor.createGrid(this, scalevalue);
+					editor.createGrid(scalevalue);
 				}
 			}
 			if (key == 'z') {
@@ -289,7 +311,7 @@ public class SpielStarten extends PApplet {
 						scalevalue += 20;
 					}
 				System.out.println(scalevalue);
-				editor.createGrid(this,scalevalue);
+				editor.createGrid(scalevalue);
 			}
 		}
 	}
@@ -332,7 +354,7 @@ public class SpielStarten extends PApplet {
 		if(mouseButton == LEFT) {
 			System.out.println("Mouse Clicked left");
 
-			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue) ,spikeListe,floorList,this);
+			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue) ,spikeListe,floorList);
 	}
 		if(mouseButton == RIGHT) {
 			System.out.println("Mouse Clicked right");

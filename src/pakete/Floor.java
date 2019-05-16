@@ -32,35 +32,26 @@ public class Floor extends Placeable{
         this.image = image;
     }
 
-    public float getPositionX() {
-        return positionX;
-    }
 
-    public void setPositionX(float positionX) {
-        this.positionX = positionX;
-    }
 
-    public float getPositionY() {
-        return positionY;
-    }
 
-    public void setPositionY(float positionY) {
-        this.positionY = positionY;
-    }
 
     public Floor(PImage image, float posiX, float posiY) {
-
-        this.image = image;
-        this.positionX = posiX;
-        this.positionY = posiY;
+        super(image,posiX,posiY);
+      //  this.image = image;
+        //this.positionX = posiX;
+        //this.positionY = posiY;
         getNonTransparentPixel();
+
+    }
+    public Floor(){
 
     }
 
     public Floor(float posiX, float posiY) {
-
-        this.positionX = posiX;
-        this.positionY = posiY;
+        super(posiX,posiY);
+       // this.positionX = posiX;
+       // this.positionY = posiY;
 
     }
 @Override

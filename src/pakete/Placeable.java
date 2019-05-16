@@ -6,11 +6,12 @@ import processing.core.PVector;
 import java.util.ArrayList;
 
 public abstract class Placeable {
-    public float positionX;
-    public float positionY;
+    private float positionX;
+    private float positionY;
     public ArrayList<PVector> pixelList = new ArrayList<>();
     public int alphaValue;
     public PImage image;
+   // private ArrayList<Placeable> placebleList = new ArrayList<>();
 
 
 
@@ -46,9 +47,23 @@ public abstract class Placeable {
         this.image = image;
     }
 
+    public Placeable(){
+
+    }
+
+    public Placeable(float positionX, float positionY){
+        this.positionX = positionX;
+        this.positionY = positionY;
+    }
+    public Placeable(PImage image, float positionX, float positionY){
+        this.image = image;
+        this.positionX = positionX;
+        this.positionY = positionY;
+    }
+
 
     public void getNonTransparentPixel() {
- System.out.println("mother");
+
 
         for (int i = 0; i < 1; i++) {
 
@@ -68,7 +83,7 @@ public abstract class Placeable {
 
                     pixelList.add(p);
 
-                    System.out.println(pixelList.size());
+                //    System.out.println(pixelList.size());
                 }
 
 

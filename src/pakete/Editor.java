@@ -18,6 +18,7 @@ public class Editor {
     ArrayList<Integer> gridList;
     private ArrayList<Floor> removeFloorList;
     private ArrayList<Placeable> placeableList;
+    private ArrayList<Placeable> removePlacableList;
 
     public ArrayList<Integer> getGridList() {
         return gridList;
@@ -38,7 +39,7 @@ public class Editor {
 
     //  Spike spike = new Spike(700, 300, 500, 200, 300, 400);
 
-    public void createObjects(float x, float y, ArrayList<Spike> spikeListe, ArrayList<Floor> floorList) {
+    public void createObjects(float x, float y) {
         //PApplet p;
 
         switch (objectIndex) {
@@ -46,7 +47,8 @@ public class Editor {
             case 0:
                 PImage floorImage = pApplet.loadImage("resources/floor.png");
                // floorList.add(new Floor(new PImage(),x,y));
-                floorList.add(new Floor (floorImage,x,y));
+                placeableList.add(new Floor (floorImage,x,y));
+                System.out.println("CASE 0 FLOOR CREATE OBJECT " + objectIndex);
 
 
                 break;
@@ -54,13 +56,14 @@ public class Editor {
                 //y = y -30;
           //  spikeListe.add(new Spike(x, y, x - 20, y + 30, x + 20, y + 30));
             placeableList.add(new Spike(x,y));
+            System.out.println("CASE 1 SPIKE CREATE OBJECT " + objectIndex);
             break;
         }
 
     }
     public void changeIndex(char key){
        // if(objectIndex >= 0 && objectIndex < 10) {
-        previewObjectshow(200,300);
+
             if (key == 'e' && objectIndex <= 8) {
                 objectIndex++;
                 System.out.println("das ist objektindex" + objectIndex);
@@ -68,7 +71,7 @@ public class Editor {
                 objectIndex--;
                 System.out.println(objectIndex);
             }
-            System.out.println(key);
+        previewObjectshow(200,300);
         }
   //  }
 
@@ -77,48 +80,69 @@ public class Editor {
 
             removeFloorList = new ArrayList<>();
             removeSpikeList = new ArrayList<>();
+            removePlacableList = new ArrayList<>();
 
 
-        for (Spike spike : spikeList) {
-            veca = new PVector(spike.getPositionX(), spike.getPositionY());
+        for (Placeable spike : placeableList) {
+            if (spike instanceof Spike) {
+                veca = new PVector(spike.getPositionX(), spike.getPositionY());
 
-            vecb = new PVector(spike.getTriangleX2(), spike.getTriangleY2());
+                vecb = new PVector(((Spike) spike).getTriangleX2(), ((Spike) spike).getTriangleY2());
 
-            vecc = new PVector(spike.getTriangleX3(), spike.getTriangleY3());
+                vecc = new PVector(((Spike) spike).getTriangleX3(), ((Spike) spike).getTriangleY3());
 
-            vecm = new PVector(x, y);
+                vecm = new PVector(x, y);
 
 
+                float w1 = (veca.x * (vecc.y - veca.y) + ((vecm.y) - veca.y) * (vecc.x - veca.x)
+                        - (vecm.x) * (vecc.y - veca.y))
+                        / ((vecb.y - veca.y) * (vecc.x - veca.x) - (vecb.x - veca.x) * (vecc.y - veca.y));
 
-            float w1 = (veca.x * (vecc.y - veca.y) + ((vecm.y) - veca.y) * (vecc.x - veca.x)
-                    - ( vecm.x) * (vecc.y - veca.y))
-                    / ((vecb.y - veca.y) * (vecc.x - veca.x) - (vecb.x - veca.x) * (vecc.y - veca.y));
+                float w2 = ((vecm.y) - veca.y - w1 * (vecb.y - veca.y)) / (vecc.y - veca.y);
 
-            float w2 = (( vecm.y) - veca.y - w1 * (vecb.y - veca.y)) / (vecc.y - veca.y);
+                System.out.println("wird ausgeführt \n Das ist w1 " + w1 + " das ist W2 " + w2 + " \n Das ist w1+w2 " + (w1 + w2));
+                if (w1 >= 0 && w2 >= 0 && (w1 + w2) <= 1) {
+                    removePlacableList.add(spike);
+                    System.out.println("wird ausgeführt(remove)");
+                } else {
 
-            System.out.println("wird ausgeführt \n Das ist w1 " + w1 + " das ist W2 " + w2 +" \n Das ist w1+w2 " + (w1 +w2));
-            if (w1 >= 0 && w2 >= 0 && (w1 + w2) <= 1) {
-               removeSpikeList.add(spike);
-               System.out.println("wird ausgeführt(remove)");
-           } else {
-
+                }
             }
         }
-        for(Spike s : removeSpikeList){
-            spikeList.remove(s);
+            // ggf in einer abfrage mit floor
+       //     for (Spike s : removeSpikeList) {
+         //       spikeList.remove(s);
+           // }
+
+        //ggf wichtig herstellen
+    //        for (Placeable s : removePlacableList) {
+      //         if(s != previewObject) {
+        //           placeableList.remove(s);
+         //          System.out.println(removePlacableList.size());
+         //      }
+        //    }
+
+
+     //   for(Floor floor : floorList){
+            for(Placeable floor : placeableList){
+                if(floor instanceof Floor) {
+                    System.out.println("kommt an");
+                    if (floor.getPositionX() < x && x < (floor.getPositionX() + floor.getImage().width) && floor.getPositionY() < y && y < (floor.getPositionY() + floor.getImage().height)) {
+                        removePlacableList.add(floor);
+                        System.out.println("test");
+                    }
+                }
+
         }
+     //   for(Floor f : removeFloorList){
+      //      floorList.remove(f);
+       // }
 
-
-        for(Floor floor : floorList){
-            System.out.println("kommt an");
-            if(floor.getPositionX() < x && x < (floor.getPositionX() + floor.getImage().width) && floor.getPositionY() < y && y < (floor.getPositionY() + floor.getImage().height)){
-                removeFloorList.add(floor);
-                System.out.println("test");
+        for (Placeable s : removePlacableList) {
+            if(s != previewObject) {
+                placeableList.remove(s);
+                System.out.println(removePlacableList.size());
             }
-
-        }
-        for(Floor f : removeFloorList){
-            floorList.remove(f);
         }
 
 
@@ -143,29 +167,32 @@ public class Editor {
         }
     }
     public void previewObjectshow(float x, float y){
-        System.out.println("preview");
-System.out.println(previewObject);
+
         switch(objectIndex) {
 
+
+
             case 0:
-                placeableList.remove(previewObject);
-                previewObject = new Spike();
-                placeableList.add(previewObject);
-
-
-
-
-
-
-                break;
-
-            case 1:
                 placeableList.remove(previewObject);
                 PImage floorImage = pApplet.loadImage("resources/floor.png");
                 previewObject = new Floor(floorImage,800,800);
                 System.out.println(placeableList.size() + "Size");
                 placeableList.add(previewObject);
                 System.out.println(placeableList.size() + "Size");
+                System.out.println("CASE 0 FLOOR PREVIEW OBJECT "+ objectIndex);
+
+
+                break;
+
+            case 1:
+                placeableList.remove(previewObject);
+                previewObject = new Spike();
+                placeableList.add(previewObject);
+                System.out.println("CASE 1 SPIKE PREVIEW OBJECT " + objectIndex);
+
+
+
+
 
 
                 break;

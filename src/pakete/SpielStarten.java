@@ -341,6 +341,7 @@ public class SpielStarten extends PApplet {
 		if (key == 'q') {
 			editor.changeIndex(key);
 
+
 		}
 		if (key == 'e') {
 			editor.changeIndex(key);
@@ -354,7 +355,7 @@ public class SpielStarten extends PApplet {
 		if(mouseButton == LEFT) {
 			System.out.println("Mouse Clicked left");
 
-			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue) ,spikeListe,floorList);
+			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue));
 	}
 		if(mouseButton == RIGHT) {
 			System.out.println("Mouse Clicked right");

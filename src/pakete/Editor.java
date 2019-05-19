@@ -129,7 +129,7 @@ public class Editor {
                     System.out.println("kommt an");
                     if (floor.getPositionX() < x && x < (floor.getPositionX() + floor.getImage().width) && floor.getPositionY() < y && y < (floor.getPositionY() + floor.getImage().height)) {
                         removePlacableList.add(floor);
-                        System.out.println("test");
+                        System.out.println("test1");
                     }
                 }
 

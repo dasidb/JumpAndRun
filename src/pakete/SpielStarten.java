@@ -15,6 +15,8 @@ public class SpielStarten extends PApplet {
 	private Floor floor;
 	private CollisionHandler collisionHandler;
 	private Placeable placeable;
+	private boolean respawn;
+
 
 	private ArrayList<Spike> spikeListe;
 	private ArrayList<Bullet> bulletList;
@@ -97,7 +99,7 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void erschaffeWelt() {
-		welt = new SpielWelt(held);
+		welt = new SpielWelt(held,this);
 	}
 
 	public void spielStarten() {
@@ -132,7 +134,7 @@ public class SpielStarten extends PApplet {
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
 		bulletList = new ArrayList<>();
-		editor = new Editor(this,placebleList);
+		editor = new Editor(this,placebleList,welt,this);
 		editor.createGrid(40);
 		lastMovement.add(0,0);
 		System.out.println(held);
@@ -198,8 +200,20 @@ public class SpielStarten extends PApplet {
 		displaySpike();
 		displayFloor();
 		displayBullet();
-
+		if(editor.isRespawn()) {
+            respawn();
+        }
 	}
+
+	public void respawn(){
+        for(Placeable restart : placebleList) {
+            if(restart instanceof Restart) {
+
+                this.text("R", restart.getPositionX(), restart.getPositionY());
+                textSize(20);
+            }
+        }
+    }
 	public void displaySpike(){
 		for (Placeable s : placebleList) {
             if (s instanceof Spike) {
@@ -291,9 +305,11 @@ public class SpielStarten extends PApplet {
 			if (key == 't') {
 				if(showgrid){
 					showgrid = false;
+					editor.setEditorMode(false);
 
 				}else {
 					showgrid = true;
+					editor.setEditorMode(true);
 				}
 
 			}
@@ -353,10 +369,15 @@ public class SpielStarten extends PApplet {
 	@Override
 	public void mouseClicked(){
 		if(mouseButton == LEFT) {
-			System.out.println("Mouse Clicked left");
+            System.out.println("Mouse Clicked left");
+            if (editor.isEditorMode()) {
+                editor.createObjects((float) mouseX - (mouseX % scalevalue), (float) mouseY - (mouseY % scalevalue));
+            }else{
+                editor.createObjects((float) mouseX , (float) mouseY );
 
-			editor.createObjects((float) mouseX - (mouseX % scalevalue) ,(float) mouseY - (mouseY % scalevalue));
-	}
+
+            }
+        }
 		if(mouseButton == RIGHT) {
 			System.out.println("Mouse Clicked right");
 			editor.deleteSpike(spikeListe, (float) mouseX, (float) mouseY, floorList);

@@ -4,30 +4,54 @@ import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Editor {
+    int restartCounter = 0;
     private PVector veca;
     private PVector vecb;
     private PVector vecc;
     private PVector vecm;
     Placeable previewObject;
     private PApplet pApplet;
+    private SpielStarten spielStarten;
     private ArrayList<Spike> removeSpikeList;
     private int objectIndex = 0;
     ArrayList<Integer> gridList;
+    private SpielWelt welt;
     private ArrayList<Floor> removeFloorList;
     private ArrayList<Placeable> placeableList;
     private ArrayList<Placeable> removePlacableList;
+    private boolean editorMode;
+    private boolean respawn;
+
+    public boolean isRespawn() {
+        return respawn;
+    }
+
+    public void setRespawn(boolean respawn) {
+        this.respawn = respawn;
+    }
+
+    public boolean isEditorMode() {
+        return editorMode;
+    }
+
+    public void setEditorMode(boolean editorMode) {
+        this.editorMode = editorMode;
+    }
 
     public ArrayList<Integer> getGridList() {
         return gridList;
     }
 
-    public Editor(PApplet pApplet,ArrayList<Placeable> placeableList){
+    public Editor(PApplet pApplet,ArrayList<Placeable> placeableList,SpielWelt welt,SpielStarten spielStarten){
         this.pApplet = pApplet;
         this.placeableList = placeableList;
        // placeableList.add(previewObject);
+        this.welt = welt;
+        this.spielStarten = spielStarten;
     }
     public Editor(){
 
@@ -45,6 +69,16 @@ public class Editor {
         switch (objectIndex) {
 
             case 0:
+                setRespawn(true);
+
+                if(restartCounter == 0){
+                    placeableList.add(new Restart(x,y));
+                restartCounter += 1;
+                }
+
+            break;
+
+            case 1:
                 PImage floorImage = pApplet.loadImage("resources/floor.png");
                // floorList.add(new Floor(new PImage(),x,y));
                 placeableList.add(new Floor (floorImage,x,y));
@@ -52,7 +86,7 @@ public class Editor {
 
 
                 break;
-            case 1:
+            case 2:
                 //y = y -30;
           //  spikeListe.add(new Spike(x, y, x - 20, y + 30, x + 20, y + 30));
             placeableList.add(new Spike(x,y));
@@ -172,7 +206,7 @@ public class Editor {
 
 
 
-            case 0:
+            case 1:
                 placeableList.remove(previewObject);
                 PImage floorImage = pApplet.loadImage("resources/floor.png");
                 previewObject = new Floor(floorImage,800,800);
@@ -184,7 +218,7 @@ public class Editor {
 
                 break;
 
-            case 1:
+            case 2:
                 placeableList.remove(previewObject);
                 previewObject = new Spike();
                 placeableList.add(previewObject);
@@ -210,6 +244,13 @@ public class Editor {
             ((Spike)previewObject).setTriangleX3(previewObject.getPositionX()+20);
             ((Spike)previewObject).setTriangleY3(previewObject.getPositionY()+30);
         }
+
+    }
+    public ArrayList<Float> respawn(float x, float y){
+        ArrayList<Float> respawnList = new ArrayList<>();
+        respawnList.add(x);
+        respawnList.add(y);
+    return respawnList;
 
     }
     }

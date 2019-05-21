@@ -10,6 +10,7 @@ public class SpielWelt {
     private float gravity = 8f;
     private PImage welt;
     private Charakter held;
+    private PApplet p;
     public float getGravity() {
         return gravity;
     }
@@ -27,8 +28,9 @@ public class SpielWelt {
     }
 
 
-    public SpielWelt(Charakter held){
+    public SpielWelt(Charakter held, PApplet p){
         this.held = held;
+        this.p = p;
     }
 
 
@@ -38,6 +40,7 @@ public class SpielWelt {
     public void erschaffeWelt(PApplet p){
         PImage welt = p.loadImage("resources/hintergrund.png");
         p.image(welt,0,0);
+
     }
 
     public void gravitation() {
@@ -62,5 +65,6 @@ public class SpielWelt {
         }
 
     }
+
 
 }

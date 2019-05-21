@@ -107,9 +107,7 @@ public class CollisionHandler {
 
     public void stopGrav() {
         if (isColiding() == true) {
-
-            held.setPositionX(1);
-            held.setPositionY(1);
+            held.sterben(placeableList);
             setColiding(false);
 
         }

@@ -134,7 +134,7 @@ public class SpielStarten extends PApplet {
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
 		bulletList = new ArrayList<>();
-		editor = new Editor(this,placebleList,welt,this);
+		editor = new Editor(this,placebleList,welt,this, held);
 		editor.createGrid(40);
 		lastMovement.add(0,0);
 		System.out.println(held);

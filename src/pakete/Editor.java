@@ -26,6 +26,7 @@ public class Editor {
     private boolean editorMode;
     private boolean respawn;
     private Restart restart;
+    private Charakter held;
 
     public boolean isRespawn() {
         return respawn;
@@ -47,12 +48,13 @@ public class Editor {
         return gridList;
     }
 
-    public Editor(PApplet pApplet,ArrayList<Placeable> placeableList,SpielWelt welt,SpielStarten spielStarten){
+    public Editor(PApplet pApplet,ArrayList<Placeable> placeableList,SpielWelt welt,SpielStarten spielStarten, Charakter held){
         this.pApplet = pApplet;
         this.placeableList = placeableList;
        // placeableList.add(previewObject);
         this.welt = welt;
         this.spielStarten = spielStarten;
+        this.held = held;
     }
     public Editor(){
 
@@ -79,6 +81,7 @@ public class Editor {
                 if(restartCounter == 0){
                     restart = new Restart(x,y);
                     placeableList.add(restart);
+
                 restartCounter += 1;
                 }
 

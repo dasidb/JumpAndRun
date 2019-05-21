@@ -25,11 +25,15 @@ public class Charakter {
     private int test;
     private boolean cooliding = false;
 
+
     private boolean moveLeft;
     private boolean moveRight;
     private boolean moveDown;
 
     private boolean shoot;
+
+
+
 
     public boolean isMoveLeft() {
         return moveLeft;
@@ -210,8 +214,15 @@ public class Charakter {
 
     }
 
-    public void sterben(Charakter held) {
-        held = null;
+    public void sterben(ArrayList<Placeable> placeableList) {
+        for(Placeable p : placeableList) {
+            if (p instanceof Restart) {
+
+                this.setPositionX(p.getPositionX());
+                this.setPositionY(p.getPositionY());
+
+            }
+        }
     }
 
     public void springen(SpielWelt s) {

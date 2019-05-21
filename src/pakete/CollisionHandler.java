@@ -14,7 +14,15 @@ public class CollisionHandler {
     private ArrayList<Placeable> placeableList;
     //   private boolean spikeCollisionCheck;
     private boolean coliding;
+    private boolean testJump;
 
+    public boolean isTestJump() {
+        return testJump;
+    }
+
+    public void setTestJump(boolean testJump) {
+        this.testJump = testJump;
+    }
 
     public boolean isColiding() {
         return coliding;
@@ -52,6 +60,7 @@ public class CollisionHandler {
     public void spikeCollision() {
         for (Placeable c : placeableList) {
             if (c instanceof Spike) {
+                //Spike spiketest = new Spike();
 
                 int kollisionDistance = 65;
 
@@ -67,7 +76,7 @@ public class CollisionHandler {
                         && held.getPositionX() - ((Spike) c).getTriangleX3() > -kollisionDistance
                         && held.getPositionY() - ((Spike) c).getTriangleY3() < kollisionDistance
                         && held.getPositionY() - ((Spike) c).getTriangleY3() > -kollisionDistance)) {
-                    System.out.println("test");
+
                     if (spikeCollisionCheck(((Spike) c)) == true) {
                     }
                 }
@@ -117,58 +126,78 @@ public class CollisionHandler {
     public void kollisionFloor() {
         PVector vecp = new PVector((int) held.getPositionX(), (int) held.getPositionY());
 
+
         // wenn w key gedrückt boolean setzen so das es nicht durchfällt!
-        for (PVector p : held.getPixelListBottom()) {
+
+      //  for (PVector p : held.getPixelListBottom()) {
+
+            for (PVector p : held.getPixelList()) {
+
+            for (Placeable floor : placeableList) {
+                if (floor instanceof Floor) {
+
+                    if (floor.getPositionY() - held.getPositionY() < 50 && floor.getPositionY() - held.getPositionY() > 10 && floor.getPositionX() - held.getPositionX() < 20 && (floor.getPositionX() + floor.getImage().width) - held.getPositionX() > -20) {
+                        if (((p.x + held.getPositionX()) >= floor.getPositionX() && (p.x + held.getPositionX()) <= (floor.getPositionX() + floor.getImage().width)) && ((p.y + held.getPositionY()) >= floor.getPositionY()) && (p.y + held.getPositionY()) <= (floor.getPositionY() + 10)) {
+
+                            held.setCooliding(true);
+                            held.setJumpCount(2);
+                            welt.setGravity(1.5F);
+                            held.setPositionY(floor.getPositionY() - held.getImg().height);
+
+                            //test boolean für top collision problem
+                            setTestJump(false);
 
 
-            for (Floor floortest : floorList) {
-
-                if (floortest.getPositionY() - held.getPositionY() < 50 && floortest.getPositionY() - held.getPositionY() > 10 && floortest.getPositionX() - held.getPositionX() < 20 && (floortest.getPositionX() + floortest.getImage().width) - held.getPositionX() > -20) {
-                    if (((p.x + held.getPositionX()) >= floortest.getPositionX() && (p.x + held.getPositionX()) <= (floortest.getPositionX() + floortest.getImage().width)) && ((p.y + held.getPositionY()) >= floortest.getPositionY()) && (p.y + held.getPositionY()) <= (floortest.getPositionY() + 10)) {
-
-                        held.setCooliding(true);
-                        held.setJumpCount(2);
-                        welt.setGravity(1.5F);
-                        held.setPositionY(floortest.getPositionY() - held.getImg().height);
-
-                        //warum köst es das problem?
-                        //if(held.isJumping()){
-                        //	held.setJumping(true);
-                        //}
 
 
-                    } //else if (((p.x + held.getPositionX()) < floortest.getPositionX() || ((p.x + held.getPositionX()) > (floortest.getPositionX() + floortest.getImage().width)))) {
-                    //else if (( floortest.getPositionX() - (p.x + held.getPositionX()) < 10 || ((p.x + held.getPositionX()) > (floortest.getPositionX() + floortest.getImage().width)))) {
-                    else {
-                        held.setCooliding(false);
+                        } //else if (((p.x + held.getPositionX()) < floortest.getPositionX() || ((p.x + held.getPositionX()) > (floortest.getPositionX() + floortest.getImage().width)))) {
+                        //else if (( floortest.getPositionX() - (p.x + held.getPositionX()) < 10 || ((p.x + held.getPositionX()) > (floortest.getPositionX() + floortest.getImage().width)))) {
+                        else {
+                            held.setCooliding(false);
 
+
+                        }
 
                     }
+                    // check floor links
+//                    if ((p.x + held.getPositionX()) > floor.getPositionX() && (p.x + held.getPositionX()) < (floor.getPositionX() + 20) && (p.y + held.getPositionY()) > floor.getPositionY() && (p.y + held.getPositionY()) < (floor.getImage().height + floor.getPositionY())) {
+//                        System.out.println("berührt");
+//                        held.setMoveRight(false);
+//                        held.setPositionX(floor.getPositionX() - 20);
+//                    }
+                    if ((p.x + held.getPositionX()) > floor.getPositionX() && (p.x + held.getPositionX()) < (floor.getPositionX()) + 3 && (p.y + held.getPositionY()) > floor.getPositionY() && (p.y + held.getPositionY()) < (floor.getImage().height + floor.getPositionY() - 10 )) {
+                            System.out.println("berührt");
+                            held.setMoveRight(false);
+                            held.setPositionX(floor.getPositionX() - 20);
+                    }
+
+
+
+                    // check floor rechts
+                    if ((p.x + held.getPositionX()) < (floor.getPositionX() + floor.getImage().width) && (p.x + held.getPositionX()) > ((floor.getPositionX() + floor.getImage().width) - 3) && (p.y + held.getPositionY()) > floor.getPositionY() && (p.y + held.getPositionY()) < (floor.getImage().height + floor.getPositionY() - 10)) {
+
+                        System.out.println("berührt");
+                        held.setMoveLeft(false);
+                        held.setPositionX(floor.getPositionX() + floor.getImage().width);
+                    }
+
 
                 }
-                if ((p.x + held.getPositionX()) > floortest.getPositionX() && (p.x + held.getPositionX()) < (floortest.getPositionX() + 20) && (p.y + held.getPositionY()) > floortest.getPositionY() && (p.y + held.getPositionY()) < (floortest.getImage().height + floortest.getPositionY())) {
-                    System.out.println("berührt");
-                    held.setMoveRight(false);
-                    held.setPositionX(floortest.getPositionX() - 20);
-                }
-                if ((p.x + held.getPositionX()) < (floortest.getPositionX() + floortest.getImage().width) && (p.x + held.getPositionX()) > ((floortest.getPositionX() + floortest.getImage().width) - 20) && (p.y + held.getPositionY()) > floortest.getPositionY() && (p.y + held.getPositionY()) < (floortest.getImage().height + floortest.getPositionY())) {
-
-                    System.out.println("berührt");
-                    held.setMoveLeft(false);
-                    held.setPositionX(floortest.getPositionX() + floortest.getImage().width);
-                }
-
-
             }
         }
         for (PVector p : held.getPixelListTop()) {
 
 
-            for (Floor floortest : floorList) {
-                if ((p.x + held.getPositionX()) > floortest.getPositionX() && (p.x + held.getPositionX()) < ((floortest.getPositionX() + floortest.getImage().width)) && (p.y + held.getPositionY()) < (floortest.getPositionY() + floortest.getImage().height) && (p.y + held.getPositionY()) > (floortest.getImage().height + floortest.getPositionY() - 20)) {
-                    held.setPositionY(floortest.getImage().height + floortest.getPositionY());
-                    held.setJumping(false);
-                  //  held.setTest(1);
+            for (Placeable floor : placeableList) {
+                if (floor instanceof Floor) {
+                    if ((p.x + held.getPositionX()) > floor.getPositionX() && (p.x + held.getPositionX()) < ((floor.getPositionX() + floor.getImage().width)) && (p.y + held.getPositionY()) < (floor.getPositionY() + floor.getImage().height) && (p.y + held.getPositionY()) > (floor.getImage().height + floor.getPositionY() - 20)) {
+                        held.setPositionY(floor.getImage().height + floor.getPositionY());
+                        held.setJumping(false);
+                        testJump = true;
+
+
+                        //  held.setTest(1);
+                    }
                 }
             }
         }

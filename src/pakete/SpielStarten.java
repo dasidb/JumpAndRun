@@ -179,17 +179,18 @@ public class SpielStarten extends PApplet {
 
 		editor.testdraw((float) mouseX,(float) mouseY);
 
+
 	}
 
 
 	public void displayFloor(){
-		for(Floor f : floorList){
-			f.setImage(loadImage("resources/floor.png"));
-			image(f.getImage(),f.getPositionX(),f.getPositionY());
-		}
+//		for(Floor f : floorList){
+//			//f.setImage(loadImage("resources/floor.png"));
+//			image(f.getImage(),f.getPositionX(),f.getPositionY());
+//		}
 		for(Placeable c : placebleList){
 		    if(c instanceof Floor){
-		        c.setImage(loadImage("resources/floor.png"));
+
 		        image(c.getImage(),c.getPositionX(),c.getPositionY());
 
             }
@@ -291,7 +292,10 @@ public class SpielStarten extends PApplet {
 				lastMovement.add(0,1);
 			}
 			if (key == 'w') {
-				held.setJumping(true);
+			    if(!collisionHandler.isTestJump()) {
+                    held.setJumping(true);
+                }
+
 			}
 
 			if (key == 's') {
@@ -345,6 +349,7 @@ public class SpielStarten extends PApplet {
 			held.setJumpTime(1 / 30F);
 			held.setMaxJump(false);
 			held.setJumpCount(held.getJumpCount() - 1);
+            collisionHandler.setTestJump(false);
 		}
 		if (key == 's') {
 			held.setMoveDown(false);

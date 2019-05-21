@@ -101,7 +101,20 @@ public class Editor {
             placeableList.add(new Spike(x,y));
             System.out.println("CASE 1 SPIKE CREATE OBJECT " + objectIndex);
             break;
+
+            case 3:
+               PImage shortImage = pApplet.loadImage("resources/floor.png");
+                shortImage.resize(50,20);
+                Floor shortfloor = new Floor(shortImage,x,y);
+
+                placeableList.add(shortfloor);
+                System.out.println("CASE 1 SPIKE CREATE OBJECT " + objectIndex);
+
+
+                break;
         }
+
+
 
     }
     public void changeIndex(char key){
@@ -232,6 +245,15 @@ public class Editor {
                 previewObject = new Spike();
                 placeableList.add(previewObject);
                 System.out.println("CASE 1 SPIKE PREVIEW OBJECT " + objectIndex);
+
+                break;
+
+            case 3:
+                placeableList.remove(previewObject);
+                PImage shortImage = pApplet.loadImage("resources/floor.png");
+                shortImage.resize(50,20);
+                previewObject = new Floor(shortImage,800,800);
+                placeableList.add(previewObject);
 
 
 

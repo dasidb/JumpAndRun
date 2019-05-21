@@ -62,6 +62,7 @@ public class SpielWelt {
         }
         if (held.getPositionY() > 300) {
             held.setJumpCount(2);
+
         }
 
     }

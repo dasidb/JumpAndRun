@@ -15,7 +15,6 @@ public class Restart extends Placeable {
        super(posiX,posiY);
      //   this.posiX = posiX;
        // this.posiY = posiY;
-        System.out.println("dwa");
 
     }
 

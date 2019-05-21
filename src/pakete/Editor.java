@@ -25,6 +25,7 @@ public class Editor {
     private ArrayList<Placeable> removePlacableList;
     private boolean editorMode;
     private boolean respawn;
+    private Restart restart;
 
     public boolean isRespawn() {
         return respawn;
@@ -70,9 +71,14 @@ public class Editor {
 
             case 0:
                 setRespawn(true);
+                if(restartCounter == 1){
+                    placeableList.remove(restart);
+                    restartCounter -= 1;
+                }
 
                 if(restartCounter == 0){
-                    placeableList.add(new Restart(x,y));
+                    restart = new Restart(x,y);
+                    placeableList.add(restart);
                 restartCounter += 1;
                 }
 

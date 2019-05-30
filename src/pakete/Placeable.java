@@ -18,6 +18,7 @@ public abstract class Placeable {
 
     public float getPositionX() {
         return positionX;
+
     }
 
     public void setPositionX(float positionX) {

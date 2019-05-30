@@ -16,6 +16,7 @@ public class SpielStarten extends PApplet {
 	private CollisionHandler collisionHandler;
 	private Placeable placeable;
 	private boolean respawn;
+	private SaveLevel savelevel;
 
 
 	private ArrayList<Spike> spikeListe;
@@ -70,8 +71,18 @@ public class SpielStarten extends PApplet {
 		erschaffeFloor();
 		erschaffeCollisionHandler();
         erschaffePlacable();
+        erschaffeEditor();
+        erschaffeSaveLevel();
 
 	}
+    public void erschaffeEditor(){
+        editor = new Editor(this,placebleList,welt,this, held, savelevel);
+    }
+	public void erschaffeSaveLevel(){
+        savelevel = new SaveLevel(this,editor);
+        editor.setSaveLevel(savelevel);
+
+    }
 
 	public void erschaffePlacable(){
 	  //  placeable = new Placeable();
@@ -134,7 +145,7 @@ public class SpielStarten extends PApplet {
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
 		bulletList = new ArrayList<>();
-		editor = new Editor(this,placebleList,welt,this, held);
+		//editor = new Editor(this,placebleList,welt,this, held, savelevel);
 		editor.createGrid(40);
 		lastMovement.add(0,0);
 		System.out.println(held);
@@ -368,6 +379,13 @@ public class SpielStarten extends PApplet {
 			editor.changeIndex(key);
 
 		}
+        if (key == 'p') {
+            savelevel.saveJsonLevel();
+        }
+        if (key == 'l') {
+            savelevel.loadJsonLevel();
+            key = 'b';
+        }
 	}
 
 	//boolean für is editor mode

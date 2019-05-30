@@ -3,6 +3,7 @@ package pakete;
 import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
+import processing.data.JSONArray;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -27,6 +28,15 @@ public class Editor {
     private boolean respawn;
     private Restart restart;
     private Charakter held;
+    private SaveLevel saveLevel;
+
+    public SaveLevel getSaveLevel() {
+        return saveLevel;
+    }
+
+    public void setSaveLevel(SaveLevel saveLevel) {
+        this.saveLevel = saveLevel;
+    }
 
     public boolean isRespawn() {
         return respawn;
@@ -48,13 +58,14 @@ public class Editor {
         return gridList;
     }
 
-    public Editor(PApplet pApplet,ArrayList<Placeable> placeableList,SpielWelt welt,SpielStarten spielStarten, Charakter held){
+    public Editor(PApplet pApplet,ArrayList<Placeable> placeableList,SpielWelt welt,SpielStarten spielStarten, Charakter held, SaveLevel saveLevel){
         this.pApplet = pApplet;
         this.placeableList = placeableList;
        // placeableList.add(previewObject);
         this.welt = welt;
         this.spielStarten = spielStarten;
         this.held = held;
+        this.saveLevel = saveLevel;
     }
     public Editor(){
 
@@ -66,6 +77,21 @@ public class Editor {
 
     //  Spike spike = new Spike(700, 300, 500, 200, 300, 400);
 
+    public void createObjectFromJson(JSONArray jsonArray){
+        System.out.println("test3");
+        int tempObjectIndex = objectIndex;
+        System.out.println("size " + jsonArray.size());
+        System.out.println(jsonArray.getJSONObject(0).getFloat("posiX " + 0) + "das ist der float");
+        for(int i = 0; i < jsonArray.size(); i++) {
+
+            if (jsonArray.getJSONObject(i).getString("bezeichner").equals("Spike " +i) ) {
+                objectIndex = 2;
+                System.out.println("kommt an endloss");
+                this.createObjects(jsonArray.getJSONObject(i).getFloat("posiX " + i),jsonArray.getJSONObject(i).getFloat("posiY " + i));
+            }
+        }
+        jsonArray = null;
+    }
     public void createObjects(float x, float y) {
         //PApplet p;
 
@@ -97,15 +123,23 @@ public class Editor {
                 break;
             case 2:
                 //y = y -30;
-          //  spikeListe.add(new Spike(x, y, x - 20, y + 30, x + 20, y + 30));
-            placeableList.add(new Spike(x,y));
+          //  spikeListe.add(new Spike(x, y, x - 20, y + 30, x + 20, y + 30))
+
+                System.out.println("kommt an vor erstellen");
+                Placeable spike = new Spike(x,y);
+                placeableList.add(spike);
+                System.out.println("kommt an erstellen" + saveLevel);
+                saveLevel.addJsonObject(spike);
+                System.out.println("kommt an nach erstellen");
+
+          //  placeableList.add(new Spike(x,y));
             System.out.println("CASE 1 SPIKE CREATE OBJECT " + objectIndex);
             break;
 
             case 3:
                PImage shortImage = pApplet.loadImage("resources/floor.png");
                 shortImage.resize(50,20);
-                Floor shortfloor = new Floor(shortImage,x,y);
+                ShortFloor shortfloor = new ShortFloor(shortImage,x,y);
 
                 placeableList.add(shortfloor);
                 System.out.println("CASE 1 SPIKE CREATE OBJECT " + objectIndex);

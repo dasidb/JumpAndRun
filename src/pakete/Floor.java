@@ -59,9 +59,9 @@ public class Floor extends Placeable{
 
         super.getNonTransparentPixel();
 /*
-            System.out.println(getPositionX());
-        System.out.println(getPositionY());
-        System.out.println(pixelList.size());
+            //system.out.println(getPositionX());
+        //system.out.println(getPositionY());
+        //system.out.println(pixelList.size());
         for (int i = 0; i < 1; i++) {
 
             for (int c = 0; c < image.width; c++) {
@@ -73,17 +73,17 @@ public class Floor extends Placeable{
 
                 //int alpha = ( t >> 24) & 255;
                 //                        11111111
-                //System.out.println(alpha);
+                ////system.out.println(alpha);
                 //16777215
                 if (alpha > 100) {
                     PVector p = new PVector((c+ getPositionX()), (i+ getPositionY()));
 
                     pixelList.add(p);
 
-                System.out.println(pixelList.size());
+                //system.out.println(pixelList.size());
                 }
 
-                //System.out.println("das ist C " + c + "\n" + "das ist i" + i);
+                ////system.out.println("das ist C " + c + "\n" + "das ist i" + i);
 
 
             }
@@ -92,7 +92,7 @@ public class Floor extends Placeable{
         // unsicher ob nötig
   //  for (PVector f : pixelList) {
  //       valueList.add(countValue,f);
- //      System.out.println("gucken");
+ //      //system.out.println("gucken");
   //      countValue ++;
    // }
     }

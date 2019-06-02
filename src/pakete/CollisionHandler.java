@@ -161,12 +161,12 @@ public class CollisionHandler {
                     }
                     // check floor links
 //                    if ((p.x + held.getPositionX()) > floor.getPositionX() && (p.x + held.getPositionX()) < (floor.getPositionX() + 20) && (p.y + held.getPositionY()) > floor.getPositionY() && (p.y + held.getPositionY()) < (floor.getImage().height + floor.getPositionY())) {
-//                        System.out.println("berührt");
+//                        //system.out.println("berührt");
 //                        held.setMoveRight(false);
 //                        held.setPositionX(floor.getPositionX() - 20);
 //                    }
                     if ((p.x + held.getPositionX()) > floor.getPositionX() && (p.x + held.getPositionX()) < (floor.getPositionX()) + 3 && (p.y + held.getPositionY()) > floor.getPositionY() && (p.y + held.getPositionY()) < (floor.getImage().height + floor.getPositionY() - 10 )) {
-                            System.out.println("berührt");
+                            //system.out.println("berührt");
                             held.setMoveRight(false);
                             held.setPositionX(floor.getPositionX() - 20);
                     }
@@ -176,7 +176,7 @@ public class CollisionHandler {
                     // check floor rechts
                     if ((p.x + held.getPositionX()) < (floor.getPositionX() + floor.getImage().width) && (p.x + held.getPositionX()) > ((floor.getPositionX() + floor.getImage().width) - 3) && (p.y + held.getPositionY()) > floor.getPositionY() && (p.y + held.getPositionY()) < (floor.getImage().height + floor.getPositionY() - 10)) {
 
-                        System.out.println("berührt");
+                        //system.out.println("berührt");
                         held.setMoveLeft(false);
                         held.setPositionX(floor.getPositionX() + floor.getImage().width);
                     }

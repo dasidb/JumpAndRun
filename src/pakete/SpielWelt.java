@@ -55,7 +55,7 @@ public class SpielWelt {
             }
         }
         if (held.getPositionY() < 300) {
-            // System.out.println(getHeldY());
+            // //system.out.println(getHeldY());
             held.setPositionY(held.getPositionY() + gravity);
 
 

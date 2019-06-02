@@ -78,18 +78,18 @@ public abstract class Placeable {
 
                 //int alpha = ( t >> 24) & 255;
                 //                        11111111
-                //System.out.println(alpha);
+                ////system.out.println(alpha);
                 //16777215
                 if (alpha > 100) {
                     PVector p = new PVector((c + getPositionX()), (i + getPositionY()));
 
                     pixelList.add(p);
 
-                //    System.out.println(pixelList.size());
+                //    //system.out.println(pixelList.size());
                 }
 
 
-                //System.out.println("das ist C " + c + "\n" + "das ist i" + i);
+                ////system.out.println("das ist C " + c + "\n" + "das ist i" + i);
 
 
             }

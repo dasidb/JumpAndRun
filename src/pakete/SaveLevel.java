@@ -30,18 +30,53 @@ public class SaveLevel {
     }
 
     public void saveJsonLevel(){
+        int testi= 0;
+        System.out.println(jsonArray.size() + "json array Size save ");
+
+
+        JSONArray tempJArray = new JSONArray();
+        for(int i = 0 ; i < jsonArray.size() ; i++){
+            if(!jsonArray.isNull(i)){
+
+
+                tempJArray.setJSONObject(testi, jsonArray.getJSONObject(i));
+                System.out.println(tempJArray.size()+ "tempArraySize");
+                testi ++;
+            }
+
+
+        }
+        jsonArray = tempJArray;
+
 
         p.saveJSONArray(jsonArray, "C:\\Users\\lukas.kapust\\Desktop\\java test\\possession\\testen\\LevelFolder\\level.json");
-        System.out.println("gespeichert");
+        //system.out.println("gespeichert");
+    }
+
+    public void removeFromJson(Placeable placeable){
+        System.out.println("json array size  remove" + jsonArray.size());
+
+        for(int i = 0 ; i < jsonArray.size(); i++){
+
+            if(!jsonArray.isNull(i)){
+           if( jsonArray.getJSONObject(i).getFloat("posiX")  == placeable.getPositionX() && jsonArray.getJSONObject(i).getFloat("posiY") == placeable.getPositionY()) {
+               System.out.println("kommt an");
+               jsonArray.remove(i);
+               System.out.println("kommt an 2");
+               // break;
+           }
+           }
+        }
+
     }
 
     public void loadJsonLevel(){
         if(!loaded) {
             jsonArray = p.loadJSONArray("C:\\Users\\lukas.kapust\\Desktop\\java test\\possession\\testen\\LevelFolder\\level.json");
 
-            System.out.println("test");
+
             editor.createObjectFromJson(jsonArray);
-            System.out.println("test2");
+
             loaded = true;
         }
 
@@ -50,17 +85,23 @@ public class SaveLevel {
     }
 
     public void addJsonObject(Placeable placeable){
-        System.out.println("kommt an methode" );
+
         if(placeable instanceof Spike) {
-            bezeichner = "Spike " + counter;
+            bezeichner = "Spike";
         }
         if(placeable instanceof Floor){
-            bezeichner = "Floor " + counter;
+            bezeichner = "Floor";
+        }
+        if(placeable instanceof ShortFloor){
+            bezeichner = "ShortFloor";
+        }
+        if(placeable instanceof Restart){
+            bezeichner = "Restart";
         }
 
 
-            posiX = "posiX " +counter;
-            posiY = "posiY " + counter;
+            posiX = "posiX";
+            posiY = "posiY";
             jsonObject = new JSONObject();
             jsonObject.setString("bezeichner",bezeichner);
             jsonObject.setFloat(posiX,placeable.getPositionX());
@@ -72,7 +113,7 @@ public class SaveLevel {
 
     }
     public void test(){
-        System.out.println("test kommt an");
+        //system.out.println("test kommt an");
     }
 
 

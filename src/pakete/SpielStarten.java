@@ -53,14 +53,14 @@ public class SpielStarten extends PApplet {
 	}
 
 	public static void main(String[] args) {
-		System.out.println("hier ist die main klasse");
+		//system.out.println("hier ist die main klasse");
 		PApplet.main(SpielStarten.class, args);
-		System.out.println("hier ist die main klasse zuende");
+		//system.out.println("hier ist die main klasse zuende");
 
 	}
 
 	public SpielStarten() {
-		System.out.println("hier ist der construktor");
+		//system.out.println("hier ist der construktor");
 	}
 
 	public void ersschaffeObjekte() {
@@ -89,12 +89,12 @@ public class SpielStarten extends PApplet {
     }
 
 	public void erschaffeCollisionHandler(){
-		System.out.println("test");
+		//system.out.println("test");
 		collisionHandler = new CollisionHandler(held,spikeListe,floorList, welt,placebleList);
 	}
 
 	public void erschaffeHeld() {
-		System.out.println("hier ist erschaffe held");
+		//system.out.println("hier ist erschaffe held");
 		PImage heldImage = loadImage("resources/90tiny.png");
 		held = new Charakter(heldImage, 1, 1);
 
@@ -139,7 +139,7 @@ public class SpielStarten extends PApplet {
 	@Override
 	public void setup() {
 		super.setup();
-		System.out.println("hier ist setup");
+		//system.out.println("hier ist setup");
 		floorList = new ArrayList<>();
 
 		ersschaffeObjekte();
@@ -148,7 +148,7 @@ public class SpielStarten extends PApplet {
 		//editor = new Editor(this,placebleList,welt,this, held, savelevel);
 		editor.createGrid(40);
 		lastMovement.add(0,0);
-		System.out.println(held);
+		//system.out.println(held);
 		held.getNonTransparentPixel();
 		background(0);
 		frameRate(30);
@@ -162,7 +162,7 @@ public class SpielStarten extends PApplet {
 		super.settings();
 
 		size(800, 800);
-		System.out.println("hier wird settings aufgerufen");
+		//system.out.println("hier wird settings aufgerufen");
 
 	}
 	@Override
@@ -200,7 +200,8 @@ public class SpielStarten extends PApplet {
 //			image(f.getImage(),f.getPositionX(),f.getPositionY());
 //		}
 		for(Placeable c : placebleList){
-		    if(c instanceof Floor){
+
+		    if(c instanceof Floor ){
 
 		        image(c.getImage(),c.getPositionX(),c.getPositionY());
 
@@ -246,7 +247,7 @@ public class SpielStarten extends PApplet {
 
 			image(b.getImg(), b.getPositionX(), b.getPositionY());
 			b.bulletMove(b);
-			System.out.println(bulletList.size());
+			//system.out.println(bulletList.size());
 			if(b.getPositionX() > width || b.getPositionX() < (width - width)){
 
 				bullet.getBulletIDList().add(b);
@@ -341,7 +342,7 @@ public class SpielStarten extends PApplet {
 					if(scalevalue <= 60) {
 						scalevalue += 20;
 					}
-				System.out.println(scalevalue);
+				//system.out.println(scalevalue);
 				editor.createGrid(scalevalue);
 			}
 		}
@@ -392,7 +393,7 @@ public class SpielStarten extends PApplet {
 	@Override
 	public void mouseClicked(){
 		if(mouseButton == LEFT) {
-            System.out.println("Mouse Clicked left");
+            //system.out.println("Mouse Clicked left");
             if (editor.isEditorMode()) {
                 editor.createObjects((float) mouseX - (mouseX % scalevalue), (float) mouseY - (mouseY % scalevalue));
             }else{
@@ -402,8 +403,8 @@ public class SpielStarten extends PApplet {
             }
         }
 		if(mouseButton == RIGHT) {
-			System.out.println("Mouse Clicked right");
-			editor.deleteSpike(spikeListe, (float) mouseX, (float) mouseY, floorList);
+			//system.out.println("Mouse Clicked right");
+			editor.deleteSpike((float) mouseX, (float) mouseY);
 		}
 	}
 }

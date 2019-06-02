@@ -2,9 +2,12 @@ package pakete;
 
 import processing.core.PImage;
 
-public class ShortFloor {
+public class ShortFloor extends Floor {
 
-    public ShortFloor(PImage pImage, float posiX, float posiY){
+    public ShortFloor(PImage image, float posiX, float posiY){
+    super(image,posiX,posiY);
 
     }
+
+
 }

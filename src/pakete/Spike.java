@@ -87,7 +87,7 @@ public class Spike extends Placeable{
             }
             //Spike spike1 = new Spike(50+x+z,40+z,40+x+z,20+z,60+x+z,20+z);
             spikeListe.add(spike1);
-           // System.out.println("erschaffe spike");
+           // //system.out.println("erschaffe spike");
             //p.triangle(spike1.getGroeßeX1(), spike1.getGroeßeY1(), spike1.getGroeßeX2(), spike1.getPositionY2(), spike1.getGetPositionX3(), spike1.getPositionY3);
             x += 40;
         }

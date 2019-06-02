@@ -85,7 +85,7 @@ public class SaveLevel {
     }
 
     public void addJsonObject(Placeable placeable){
-
+        int i = jsonArray.size();
         if(placeable instanceof Spike) {
             bezeichner = "Spike";
         }
@@ -106,7 +106,7 @@ public class SaveLevel {
             jsonObject.setString("bezeichner",bezeichner);
             jsonObject.setFloat(posiX,placeable.getPositionX());
             jsonObject.setFloat(posiY,placeable.getPositionY());
-            jsonArray.setJSONObject(counter,jsonObject);
+            jsonArray.setJSONObject(i,jsonObject);
             counter ++;
 
 

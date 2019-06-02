@@ -40,13 +40,13 @@ public class SaveLevel {
 
 
                 tempJArray.setJSONObject(testi, jsonArray.getJSONObject(i));
-                System.out.println(tempJArray.size()+ "tempArraySize");
+               // System.out.println(tempJArray.size()+ "tempArraySize");
                 testi ++;
             }
 
 
         }
-        jsonArray = tempJArray;
+       // jsonArray = tempJArray;
 
 
         p.saveJSONArray(jsonArray, "C:\\Users\\lukas.kapust\\Desktop\\java test\\possession\\testen\\LevelFolder\\level.json");

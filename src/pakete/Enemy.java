@@ -5,18 +5,15 @@ import processing.core.PImage;
 import java.util.ArrayList;
 
 public class Enemy extends Charakter{
-    private int life;
-    private PImage image;
-    private int damage;
-    private float positionX;
-    private float positionY;
     private ArrayList<Enemy> enemyList;
-    private boolean test;
-
-
-
     public void sterben(){
 
+    }
+    public Enemy(){
+
+    }
+    public Enemy(PImage img, float positionX, float positionY){
+        super(img,positionX,positionY);
     }
 
 

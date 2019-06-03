@@ -5,11 +5,13 @@ import processing.core.PApplet;
 import processing.core.PImage;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class SpielWelt {
     private float gravity = 8f;
     private PImage welt;
     private Charakter held;
+    private ArrayList<Charakter> enemyArrayList;
     private PApplet p;
     public float getGravity() {
         return gravity;
@@ -28,9 +30,10 @@ public class SpielWelt {
     }
 
 
-    public SpielWelt(Charakter held, PApplet p){
+    public SpielWelt(Charakter held, PApplet p, ArrayList<Charakter> enemyArrayList1){
         this.held = held;
         this.p = p;
+        this.enemyArrayList = enemyArrayList1;
     }
 
 
@@ -42,6 +45,30 @@ public class SpielWelt {
         p.image(welt,0,0);
 
     }
+
+ /*   public void gravitation() {
+        if (held.getTest() == 1 && held.isJumping() == false && held.isMaxJump() == false) {
+            gravity = 0;
+            held.setTest(0);
+        }
+        if (gravity != 8) {
+            gravity += 0.5F;
+            if (gravity > 8) {
+                gravity = 8;
+            }
+        }
+        if (held.getPositionY() < 300) {
+            // //system.out.println(getHeldY());
+            held.setPositionY(held.getPositionY() + gravity);
+
+
+        }
+        if (held.getPositionY() > 300) {
+            held.setJumpCount(2);
+
+        }
+
+    }  */
 
     public void gravitation() {
         if (held.getTest() == 1 && held.isJumping() == false && held.isMaxJump() == false) {

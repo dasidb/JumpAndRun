@@ -9,6 +9,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Editor {
+
     int restartCounter = 0;
     private PVector veca;
     private PVector vecb;
@@ -23,7 +24,7 @@ public class Editor {
     private SpielWelt welt;
     private ArrayList<Floor> removeFloorList;
     private ArrayList<Placeable> placeableList;
-    private ArrayList<Placeable> removePlacableList;
+    private ArrayList<Placeable> removePlacableList = new ArrayList<>();
     private boolean editorMode;
     private boolean respawn;
     private Restart restart;
@@ -110,11 +111,22 @@ public class Editor {
             case 0:
                 setRespawn(true);
                 if(restartCounter == 1){
+                    System.out.println(removePlacableList+ "das ist rst");
+                    removePlacableList.add(restart);
                     placeableList.remove(restart);
+
                     restartCounter -= 1;
+
+                    /* todo
+                    * aktuell wird nach einem restart nicht gecleart erst wenn ein anderes objekt removed wird
+                    * muss geändert werden
+                    *
+                    *
+                    * */
                 }
 
                 if(restartCounter == 0){
+
                     restart = new Restart(x,y);
                     saveLevel.addJsonObject(restart);
                     placeableList.add(restart);
@@ -183,7 +195,7 @@ public class Editor {
 
 
 
-            removePlacableList = new ArrayList<>();
+         //   removePlacableList = new ArrayList<>();
 
 
         for (Placeable spike : placeableList) {
@@ -272,9 +284,16 @@ public class Editor {
         }
     }
     public void previewObjectshow(float x, float y){
-
+            System.out.println(previewObject);
         switch(objectIndex) {
 
+            case 0:
+                System.out.println(previewObject);
+                placeableList.remove(previewObject);
+                previewObject = new Restart(800,800);
+                placeableList.add(previewObject);
+
+                break;
 
 
             case 1:

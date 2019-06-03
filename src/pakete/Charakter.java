@@ -24,6 +24,8 @@ public class Charakter {
     private boolean falling;
     private int test;
     private boolean cooliding = false;
+    private int life;
+    private int damage;
 
 
     private boolean moveLeft;

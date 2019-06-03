@@ -59,6 +59,11 @@ public class SaveLevel {
         for(int i = 0 ; i < jsonArray.size(); i++){
 
             if(!jsonArray.isNull(i)){
+                if(jsonArray.getJSONObject(i).getString("bezeichner").equals("Restart")){
+                    System.out.println("kommt an");
+                    jsonArray.remove(i);
+                    break;
+                }
            if( jsonArray.getJSONObject(i).getFloat("posiX")  == placeable.getPositionX() && jsonArray.getJSONObject(i).getFloat("posiY") == placeable.getPositionY()) {
                System.out.println("kommt an");
                jsonArray.remove(i);

@@ -17,6 +17,8 @@ public class SpielStarten extends PApplet {
 	private Placeable placeable;
 	private boolean respawn;
 	private SaveLevel savelevel;
+	private ArrayList<Charakter> enemyArrayList;
+	private Enemy enemy;
 
 
 	private ArrayList<Spike> spikeListe;
@@ -73,6 +75,7 @@ public class SpielStarten extends PApplet {
         erschaffePlacable();
         erschaffeEditor();
         erschaffeSaveLevel();
+        erschaffeEnemy();
 
 	}
     public void erschaffeEditor(){
@@ -100,6 +103,14 @@ public class SpielStarten extends PApplet {
 
 	}
 
+	public void erschaffeEnemy(){
+		enemyArrayList = new ArrayList<>();
+		PImage enemyImage = loadImage("resources/enemy.png");
+		enemy = new Enemy(enemyImage,50,50);
+		enemyArrayList.add(enemy);
+
+	}
+
 	public void respawn(PImage p) {
 		held.setImg(p);
 	}
@@ -110,7 +121,7 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void erschaffeWelt() {
-		welt = new SpielWelt(held,this);
+		welt = new SpielWelt(held,this, enemyArrayList);
 	}
 
 	public void spielStarten() {
@@ -169,16 +180,10 @@ public class SpielStarten extends PApplet {
 	public void draw() {
 
 		background(0);
-		image(held.getImg(), held.getPositionX(), held.getPositionY());
-		move();
-		if(!held.isCooliding()) {
-			welt.gravitation();
-		}
-		if(showgrid){
-			editor.showGrid();
-		}
-		//kollisionFloor();
-		held.springen(welt);
+
+		this.heromove();
+
+
 		displayMethods();
 
 		removeBullet();
@@ -193,6 +198,24 @@ public class SpielStarten extends PApplet {
 
 	}
 
+
+
+
+	public void heromove(){
+		move();
+		if(!held.isCooliding()) {
+			welt.gravitation();
+		}
+		if(showgrid){
+			editor.showGrid();
+		}
+		held.springen(welt);
+	}
+
+	public void displayCharakters(){
+		image(held.getImg(), held.getPositionX(), held.getPositionY());
+		image(enemy.getImg(),enemy.getPositionX(),enemy.getPositionX());
+	}
 
 	public void displayFloor(){
 //		for(Floor f : floorList){
@@ -210,12 +233,13 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void displayMethods(){
+		displayCharakters();
 		displaySpike();
 		displayFloor();
 		displayBullet();
-		if(editor.isRespawn()) {
+		//if(editor.isRespawn()) {
             respawn();
-        }
+      //  }
 	}
 
 	public void respawn(){
@@ -330,17 +354,17 @@ public class SpielStarten extends PApplet {
 
 			}
 			if (key == 'r') {
-				if(scalevalue >20) {
+				if(scalevalue >30) {
 
-					scalevalue -= 20;
+					scalevalue -= 30;
 
 					editor.createGrid(scalevalue);
 				}
 			}
 			if (key == 'z') {
 
-					if(scalevalue <= 60) {
-						scalevalue += 20;
+					if(scalevalue <= 90) {
+						scalevalue += 30;
 					}
 				//system.out.println(scalevalue);
 				editor.createGrid(scalevalue);

@@ -3,11 +3,14 @@ package pakete;
 import processing.core.PVector;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 
 public class CollisionHandler {
     private Charakter held;
+    private ArrayList<Charakter> charakterArrayList;
     private Floor floor;
     private Spike spike;
+    private Bullet bullet;
     private SpielWelt welt;
     private ArrayList<Spike> spikeListe;
     private ArrayList<Floor> floorList;
@@ -15,6 +18,15 @@ public class CollisionHandler {
     //   private boolean spikeCollisionCheck;
     private boolean coliding;
     private boolean testJump;
+    private ArrayList<Bullet> bulletArrayList;
+
+    public ArrayList<Bullet> getBulletArrayList() {
+        return bulletArrayList;
+    }
+
+    public void setBulletArrayList(ArrayList<Bullet> bulletArrayList) {
+        this.bulletArrayList = bulletArrayList;
+    }
 
     public boolean isTestJump() {
         return testJump;
@@ -48,14 +60,44 @@ public class CollisionHandler {
         this.floorList = floorList;
     }
 
-    public CollisionHandler(Charakter held, ArrayList<Spike> spikeListe, ArrayList<Floor> floorList, SpielWelt welt, ArrayList<Placeable> placeableList) {
+    public CollisionHandler(Charakter held, ArrayList<Spike> spikeListe, ArrayList<Floor> floorList, SpielWelt welt, ArrayList<Placeable> placeableList, ArrayList<Charakter> charakterArrayList, Bullet bullet, ArrayList<Bullet> bulletArrayList) {
         this.held = held;
         this.spikeListe = spikeListe;
         this.floorList = floorList;
         this.welt = welt;
         this.placeableList= placeableList;
+        this.charakterArrayList = charakterArrayList;
+        this.bullet = bullet;
+        this.bulletArrayList = bulletArrayList;
     }
 
+
+    public void checkEnemyHit() {
+
+
+
+    if(!bulletArrayList.isEmpty()) {
+        for (Bullet b : bulletArrayList) {
+
+            for (PVector pVector : b.getBulletPixxelList()) {
+
+                //System.out.println(b.getPositionX());
+               // if (((pVector.x + b.getPositionX()) < charakterArrayList.get(1).getPositionX()) && ((pVector.y + b.getPositionY()) < charakterArrayList.get(1).getPositionY())
+               //         && ((pVector.x + b.getPositionX()) > charakterArrayList.get(1).getPositionX()) && ((pVector.y + b.getPositionY()) > charakterArrayList.get(1).getPositionY())) {
+                  //
+
+                if(((pVector.x + b.getPositionX()) > charakterArrayList.get(1).getPositionX()) && ((pVector.x + b.getPositionX()) < (charakterArrayList.get(1).getPositionX() + charakterArrayList.get(1).getImg().width))
+                    && (pVector.y + b.getPositionY()) > charakterArrayList.get(1).getPositionY() && (pVector.y + b.getPositionY()) < (charakterArrayList.get(1).getPositionY() + charakterArrayList.get(1).getImg().height)){
+                    System.out.println("juhu");
+                    b.setHit(true);
+                }
+
+
+            }
+        }
+    }
+
+    }
 
     public void spikeCollision() {
         for (Placeable c : placeableList) {

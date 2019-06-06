@@ -13,9 +13,11 @@ public class SpielWelt {
     private Charakter held;
     private ArrayList<Charakter> enemyArrayList;
     private PApplet p;
+    private ArrayList<Charakter> charakterArrayList;
     public float getGravity() {
         return gravity;
     }
+
 
     public void setGravity(float gravity) {
         this.gravity = gravity;
@@ -30,10 +32,11 @@ public class SpielWelt {
     }
 
 
-    public SpielWelt(Charakter held, PApplet p, ArrayList<Charakter> enemyArrayList1){
+    public SpielWelt(Charakter held, PApplet p, ArrayList<Charakter> enemyArrayList1, ArrayList<Charakter> charakterArrayList){
         this.held = held;
         this.p = p;
         this.enemyArrayList = enemyArrayList1;
+        this.charakterArrayList= charakterArrayList;
     }
 
 
@@ -74,6 +77,9 @@ public class SpielWelt {
         if (held.getTest() == 1 && held.isJumping() == false && held.isMaxJump() == false) {
             gravity = 0;
             held.setTest(0);
+
+           // System.out.println(held.getTest() + " test " + "\n" + held.isJumping() + " jumping \n" + held.isMaxJump() + " is max Jump");
+
         }
         if (gravity != 8) {
             gravity += 0.5F;
@@ -84,6 +90,7 @@ public class SpielWelt {
         if (held.getPositionY() < 300) {
             // //system.out.println(getHeldY());
             held.setPositionY(held.getPositionY() + gravity);
+
 
 
         }

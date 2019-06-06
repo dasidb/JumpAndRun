@@ -1,9 +1,7 @@
 package pakete;
-import processing.core.PApplet;
 import processing.core.PImage;
 import processing.core.PVector;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Charakter {
@@ -17,7 +15,9 @@ public class Charakter {
     private int t;
     private int jumpCount = 2;
     private float jumpTime = 1 / 30F;
-    private float velocity = 20;
+    //private float velocityJump = 20;
+    private float velocityJump = 20;
+    private float velocityMove = 5;
     private boolean jumping;
     private boolean maxJump;
     private float jumpHeight;
@@ -26,6 +26,7 @@ public class Charakter {
     private boolean cooliding = false;
     private int life;
     private int damage;
+   // private static final float VELOCITY = 5;
 
 
     private boolean moveLeft;
@@ -34,8 +35,29 @@ public class Charakter {
 
     private boolean shoot;
 
+    public float getVelocityMove() {
+        return velocityMove;
+    }
 
+    public void setVelocityMove(float velocityMove) {
+        this.velocityMove = velocityMove;
+    }
 
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
 
     public boolean isMoveLeft() {
         return moveLeft;
@@ -111,12 +133,12 @@ public class Charakter {
         this.jumpTime = jumpTime;
     }
 
-    public float getVelocity() {
-        return velocity;
+    public float getVelocityJump() {
+        return velocityJump;
     }
 
-    public void setVelocity(float velocity) {
-        this.velocity = velocity;
+    public void setVelocityJump(float velocityJump) {
+        this.velocityJump = velocityJump;
     }
 
     public boolean isJumping() {
@@ -230,17 +252,21 @@ public class Charakter {
     public void springen(SpielWelt s) {
 
         if (jumping == true && maxJump == false && jumpCount > 0) {
+
+
             setCooliding(false);
             s.setGravity(8F);
             test = 1;
-            if (jumpTime + velocity > s.getGravity()) {
-                setPositionY(getPositionY() - velocity - jumpTime);
+            if (jumpTime + velocityJump > s.getGravity()) {
+                setPositionY(getPositionY() - velocityJump - jumpTime);
                 jumpTime -= 0.5F;
 
-                if (jumpTime + velocity <= s.getGravity()) {
+
+                if (jumpTime + velocityJump <= s.getGravity()) {
                     maxJump = true;
                     s.setGravity(0.1F);
                     test = 0;
+                    //System.out.println("test");
                 }
             }
             falling = true;
@@ -298,6 +324,20 @@ public class Charakter {
 
         } //11111111101001010100111101001111
         //11111111001100111000000000100111
+
+    public void move() {
+        if (this.isMoveLeft() == true) {this.setPositionX(this.getPositionX() - this.velocityMove);
+
+        }
+        if (this.isMoveRight() == true) {this.setPositionX(this.getPositionX() + this.velocityMove);
+        }
+        //if (wKey == true) {
+        //	this.setPositionY(this.getPositionY() - VELOCITY);
+        //	}
+        if (this.isMoveDown() == true) {this.setPositionY(this.getPositionY() + this.velocityMove);
+        }
+
+    }
 
     }
 

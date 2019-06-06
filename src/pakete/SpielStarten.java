@@ -17,7 +17,7 @@ public class SpielStarten extends PApplet {
 	private Placeable placeable;
 	private boolean respawn;
 	private SaveLevel savelevel;
-	private ArrayList<Charakter> enemyArrayList;
+	private ArrayList<Charakter> charakterArrayList;
 	private Enemy enemy;
 
 
@@ -26,7 +26,7 @@ public class SpielStarten extends PApplet {
 	private ArrayList<Bullet> bulletIDList = new ArrayList<>();
 	private ArrayList<Placeable> placebleList = new ArrayList<>();
 	private ArrayList<Floor> floorList;
-	private static final float VELOCITY = 5;
+
 
 
 	private boolean shoot;
@@ -93,21 +93,22 @@ public class SpielStarten extends PApplet {
 
 	public void erschaffeCollisionHandler(){
 		//system.out.println("test");
-		collisionHandler = new CollisionHandler(held,spikeListe,floorList, welt,placebleList);
+		collisionHandler = new CollisionHandler(held,spikeListe,floorList, welt,placebleList, charakterArrayList, bullet, bulletList);
 	}
 
 	public void erschaffeHeld() {
 		//system.out.println("hier ist erschaffe held");
 		PImage heldImage = loadImage("resources/90tiny.png");
 		held = new Charakter(heldImage, 1, 1);
+		charakterArrayList.add(held);
 
 	}
 
 	public void erschaffeEnemy(){
-		enemyArrayList = new ArrayList<>();
+
 		PImage enemyImage = loadImage("resources/enemy.png");
 		enemy = new Enemy(enemyImage,50,50);
-		enemyArrayList.add(enemy);
+		charakterArrayList.add(enemy);
 
 	}
 
@@ -121,7 +122,7 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void erschaffeWelt() {
-		welt = new SpielWelt(held,this, enemyArrayList);
+		welt = new SpielWelt(held,this, charakterArrayList, charakterArrayList);
 	}
 
 	public void spielStarten() {
@@ -137,12 +138,18 @@ public class SpielStarten extends PApplet {
 	}
 
 	public Bullet erschaffeBullet() {
+
 		PImage bulletImage = loadImage("resources/bullet.png");
 		if(lastMovement.get(0) == 0){
-			bullet = new Bullet(bulletImage,held.getPositionX()-10,held.getPositionY()+10,2,-20,this);
+			bullet = new Bullet(bulletImage,held.getPositionX()-10,held.getPositionY()+10,2,-10,this);
+			collisionHandler.getBulletArrayList().add(bullet);
+
 
 		}else {
-			bullet = new Bullet(bulletImage, held.getPositionX() + 10, held.getPositionY() + 10, 2, 20, this);
+			bullet = new Bullet(bulletImage, held.getPositionX() + 10, held.getPositionY() + 10, 2, 10, this);
+			collisionHandler.getBulletArrayList().add(bullet);
+
+
 		}
 
 		return bullet;
@@ -152,10 +159,11 @@ public class SpielStarten extends PApplet {
 		super.setup();
 		//system.out.println("hier ist setup");
 		floorList = new ArrayList<>();
-
+		charakterArrayList = new ArrayList<>();
+		bulletList = new ArrayList<>();
 		ersschaffeObjekte();
 		spike.erschaffeSpike(this, spikeListe);
-		bulletList = new ArrayList<>();
+
 		//editor = new Editor(this,placebleList,welt,this, held, savelevel);
 		editor.createGrid(40);
 		lastMovement.add(0,0);
@@ -182,6 +190,7 @@ public class SpielStarten extends PApplet {
 		background(0);
 
 		this.heromove();
+		this.enemyMove();
 
 
 		displayMethods();
@@ -189,6 +198,8 @@ public class SpielStarten extends PApplet {
 		removeBullet();
 
 		collisionHandler.spikeCollision();
+
+		collisionHandler.checkEnemyHit();
 
 		collisionHandler.stopGrav();
 		collisionHandler.kollisionFloor();
@@ -202,19 +213,45 @@ public class SpielStarten extends PApplet {
 
 
 	public void heromove(){
-		move();
+		held.move();
 		if(!held.isCooliding()) {
 			welt.gravitation();
-		}
-		if(showgrid){
-			editor.showGrid();
+
+			// TODO: 05.06.2019 warum gravi nicht mehr greift 
 		}
 		held.springen(welt);
+		//enemy.move();
+		//enemy.movePattern();
+
 	}
 
+	public void enemyMove(){
+		for(Charakter e : charakterArrayList) {
+			if(e instanceof Enemy) {
+
+
+				Enemy c = (Enemy) e;
+
+				//c.movePattern();
+				e.move();
+			}
+
+		}
+	}
+
+
+
+
 	public void displayCharakters(){
-		image(held.getImg(), held.getPositionX(), held.getPositionY());
-		image(enemy.getImg(),enemy.getPositionX(),enemy.getPositionX());
+		for(Charakter e : charakterArrayList) {
+
+			image(e.getImg(), e.getPositionX(), e.getPositionY());
+
+
+
+		//image(held.getImg(), held.getPositionX(), held.getPositionY());
+		//image(enemy.getImg(), enemy.getPositionX(), enemy.getPositionX());
+		}
 	}
 
 	public void displayFloor(){
@@ -239,6 +276,9 @@ public class SpielStarten extends PApplet {
 		displayBullet();
 		//if(editor.isRespawn()) {
             respawn();
+		if(showgrid){
+			editor.showGrid();
+		}
       //  }
 	}
 
@@ -272,7 +312,8 @@ public class SpielStarten extends PApplet {
 			image(b.getImg(), b.getPositionX(), b.getPositionY());
 			b.bulletMove(b);
 			//system.out.println(bulletList.size());
-			if(b.getPositionX() > width || b.getPositionX() < (width - width)){
+			//if(b.getPositionX() > width || b.getPositionX() < (width - width)){
+			if(b.isHit() || b.getPositionX() > width || b.getPositionX() < (width - width)){
 
 				bullet.getBulletIDList().add(b);
 
@@ -285,7 +326,10 @@ public class SpielStarten extends PApplet {
 		if(bullet != null){
 		if (bullet.getBulletIDList() != null) {
 			for (Bullet b : bullet.getBulletIDList()) {
+
 				bulletList.remove(b);
+
+
 			}
 			bulletIDList = new ArrayList<>();
 		}
@@ -300,16 +344,16 @@ public class SpielStarten extends PApplet {
 
 	public void move() {
 		if (held.isMoveLeft() == true) {
-			held.setPositionX(held.getPositionX() - VELOCITY);
+			held.setPositionX(held.getPositionX() - held.getVelocityJump());
 		}
 		if (held.isMoveRight() == true) {
-			held.setPositionX(held.getPositionX() + VELOCITY);
+			held.setPositionX(held.getPositionX() + held.getVelocityJump());
 		}
 		//if (wKey == true) {
 		//	held.setPositionY(held.getPositionY() - VELOCITY);
 	//	}
 		if (held.isMoveDown() == true) {
-			held.setPositionY(held.getPositionY() + VELOCITY);
+			held.setPositionY(held.getPositionY() + held.getVelocityJump());
 		}
 
 	}
@@ -329,6 +373,7 @@ public class SpielStarten extends PApplet {
 			}
 			if (key == 'w') {
 			    if(!collisionHandler.isTestJump()) {
+
                     held.setJumping(true);
                 }
 

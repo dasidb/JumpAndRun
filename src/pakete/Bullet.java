@@ -2,6 +2,7 @@ package pakete;
 
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PVector;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,15 @@ public class Bullet {
     private float velocity;
     private boolean hit;
     private ArrayList<Bullet> bulletIDList = new ArrayList<>();
+    private ArrayList<PVector> bulletPixxelList = new ArrayList<>();
+
+    public ArrayList<PVector> getBulletPixxelList() {
+        return bulletPixxelList;
+    }
+
+    public void setBulletPixxelList(ArrayList<PVector> bulletPixxelList) {
+        this.bulletPixxelList = bulletPixxelList;
+    }
 
     public ArrayList<Bullet> getBulletIDList() {
         return bulletIDList;
@@ -84,11 +94,24 @@ public class Bullet {
         this.schaden = schaden;
         this.velocity = velocity;
        // p.image(this.img, this.positionX, this.positionY);
+        bulletPixxelList();
+
     }
 
     public void bulletMove(Bullet b) {
 
         b.setPositionX(b.getPositionX() + b.getVelocity());
+    }
+
+    public void bulletPixxelList(){
+
+        for(int i = 0; i < this.getImg().height; i++){
+            for(int v = 0; v < this.getImg().width; v++){
+                PVector p = new PVector(i,v);
+                bulletPixxelList.add(p);
+            }
+        }
+
     }
 
 }

@@ -19,7 +19,9 @@ public class SpielStarten extends PApplet {
 	private SaveLevel savelevel;
 	private ArrayList<Charakter> charakterArrayList;
 	private Enemy enemy;
-
+	private int shootTimerstart;
+	private int shootTimerend = 30;
+	private boolean canShoot;
 
 	private ArrayList<Spike> spikeListe;
 	private ArrayList<Bullet> bulletList;
@@ -138,7 +140,7 @@ public class SpielStarten extends PApplet {
 	}
 
 	public Bullet erschaffeBullet() {
-
+		// TODO: 06.06.2019  can shoot ändern null pointer  
 		PImage bulletImage = loadImage("resources/bullet.png");
 		if(lastMovement.get(0) == 0){
 			bullet = new Bullet(bulletImage,held.getPositionX()-10,held.getPositionY()+10,2,-10,this);
@@ -206,6 +208,15 @@ public class SpielStarten extends PApplet {
 
 		editor.testdraw((float) mouseX,(float) mouseY);
 
+		shootTimerstart ++;
+		System.out.println(shootTimerstart + "\n" + shootTimerend);
+
+		if(shootTimerstart > shootTimerend){
+			canShoot= true;
+			shootTimerstart= 0;
+		}else{
+			canShoot= false;
+		}
 
 	}
 
@@ -304,22 +315,25 @@ public class SpielStarten extends PApplet {
 	}
 
 	public void displayBullet(){
-		if(isShoot()){
-			bulletList.add(erschaffeBullet());
-		}
-		for (Bullet b : bulletList) {
-
-			image(b.getImg(), b.getPositionX(), b.getPositionY());
-			b.bulletMove(b);
-			//system.out.println(bulletList.size());
-			//if(b.getPositionX() > width || b.getPositionX() < (width - width)){
-			if(b.isHit() || b.getPositionX() > width || b.getPositionX() < (width - width)){
-
-				bullet.getBulletIDList().add(b);
-
-
+		
+			if (isShoot()) {
+				bulletList.add(erschaffeBullet());
 			}
-		}
+		
+			for (Bullet b : bulletList) {
+
+				image(b.getImg(), b.getPositionX(), b.getPositionY());
+				b.bulletMove(b);
+				//system.out.println(bulletList.size());
+				//if(b.getPositionX() > width || b.getPositionX() < (width - width)){
+				if (b.isHit() || b.getPositionX() > width || b.getPositionX() < (width - width)) {
+
+					bullet.getBulletIDList().add(b);
+
+
+				}
+			}
+		
 	}
 
 	public void removeBullet() {
